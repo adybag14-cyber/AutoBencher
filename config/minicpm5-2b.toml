@@ -1,0 +1,383 @@
+[suite]
+id = "minicpm5-2b-model-card"
+name = "MiniCPM5-2B model-card complete suite"
+source_url = "https://huggingface.co/openbmb/MiniCPM5-2B"
+expected_count = 34
+reference_model = "openbmb/MiniCPM5-2B"
+reference_average = 53.9
+
+# runner = "evalscope" uses EvalScope's native benchmark adapter against the
+# same OpenAI-compatible endpoint. runner = "native" is dispatched through a
+# benchmark-specific recipe in src/native.rs. The `verified` flag means the
+# invocation has a public reproducible harness path; it does NOT claim that all
+# upstream leaderboard infrastructure or proprietary judges are available.
+
+[[benchmark]]
+id="livecodebench-v6"
+name="LiveCodeBench v6"
+category="Code Reasoning"
+runner="evalscope"
+dataset="live_code_bench"
+evalscope_args=["--sandbox", "{\"enabled\":true}"]
+reference_score=69.1
+timeout_minutes=180
+exclusive=false
+verified=true
+upstream="https://github.com/LiveCodeBench/LiveCodeBench"
+[[benchmark]]
+id="lcb-pro-25q2-easy"
+name="LCB-Pro 25Q2 (Easy)"
+category="Code Reasoning"
+runner="native"
+dataset="lcb_pro_25q2_easy"
+reference_score=68.0
+timeout_minutes=180
+exclusive=false
+verified=false
+[[benchmark]]
+id="lcb-pro-25q2-medium"
+name="LCB-Pro 25Q2 (Medium)"
+category="Code Reasoning"
+runner="native"
+dataset="lcb_pro_25q2_medium"
+reference_score=17.5
+timeout_minutes=180
+exclusive=false
+verified=false
+[[benchmark]]
+id="ojbench"
+name="OJBench"
+category="Code Reasoning"
+runner="native"
+dataset="ojbench"
+reference_score=32.5
+timeout_minutes=240
+exclusive=true
+verified=true
+upstream="https://github.com/He-Ren/OJBench"
+[[benchmark]]
+id="scicode-wbg"
+name="SciCode (wbg)"
+category="Code Reasoning"
+runner="evalscope"
+dataset="scicode"
+evalscope_args=["--sandbox", "{\"enabled\":true}"]
+reference_score=26.3
+timeout_minutes=240
+exclusive=true
+verified=true
+upstream="https://github.com/scicode-bench/SciCode"
+
+[[benchmark]]
+id="aime-2025"
+name="AIME 2025"
+category="Math Reasoning"
+runner="evalscope"
+dataset="aime25"
+reference_score=86.5
+timeout_minutes=60
+exclusive=false
+verified=true
+[[benchmark]]
+id="aime-2026"
+name="AIME 2026"
+category="Math Reasoning"
+runner="evalscope"
+dataset="aime26"
+reference_score=86.5
+timeout_minutes=60
+exclusive=false
+verified=true
+[[benchmark]]
+id="hmmt-feb-2026"
+name="HMMT Feb 2026"
+category="Math Reasoning"
+runner="evalscope"
+dataset="hmmt26"
+reference_score=63.8
+timeout_minutes=90
+exclusive=false
+verified=true
+[[benchmark]]
+id="math-500"
+name="MATH-500"
+category="Math Reasoning"
+runner="evalscope"
+dataset="math_500"
+reference_score=94.6
+timeout_minutes=90
+exclusive=false
+verified=true
+
+[[benchmark]]
+id="ifbench"
+name="IFBench"
+category="Instruction Following"
+runner="evalscope"
+dataset="ifbench"
+reference_score=66.3
+timeout_minutes=90
+exclusive=false
+verified=true
+upstream="https://github.com/allenai/IFBench"
+[[benchmark]]
+id="ifeval"
+name="IFEval"
+category="Instruction Following"
+runner="evalscope"
+dataset="ifeval"
+reference_score=86.7
+timeout_minutes=90
+exclusive=false
+verified=true
+[[benchmark]]
+id="multi-if"
+name="Multi-IF"
+category="Instruction Following"
+runner="evalscope"
+dataset="multi_if"
+reference_score=71.8
+timeout_minutes=120
+exclusive=false
+verified=true
+upstream="https://github.com/facebookresearch/Multi-IF"
+
+[[benchmark]]
+id="mmlu-pro"
+name="MMLU-Pro"
+category="General Knowledge"
+runner="evalscope"
+dataset="mmlu_pro"
+reference_score=70.8
+timeout_minutes=180
+exclusive=false
+verified=true
+[[benchmark]]
+id="mmlu-redux"
+name="MMLU-Redux"
+category="General Knowledge"
+runner="evalscope"
+dataset="mmlu_redux"
+reference_score=84.7
+timeout_minutes=120
+exclusive=false
+verified=true
+upstream="https://github.com/aryopg/mmlu-redux"
+[[benchmark]]
+id="hle"
+name="HLE"
+category="General Knowledge"
+runner="evalscope"
+dataset="hle"
+reference_score=8.9
+timeout_minutes=180
+exclusive=false
+verified=true
+[[benchmark]]
+id="gpqa-diamond"
+name="GPQA-Diamond"
+category="General Knowledge"
+runner="evalscope"
+dataset="gpqa_diamond"
+reference_score=70.2
+timeout_minutes=120
+exclusive=false
+verified=true
+[[benchmark]]
+id="supergpqa"
+name="SuperGPQA"
+category="General Knowledge"
+runner="evalscope"
+dataset="super_gpqa"
+reference_score=40.8
+timeout_minutes=360
+exclusive=false
+verified=true
+upstream="https://github.com/SuperGPQA/SuperGPQA"
+
+[[benchmark]]
+id="aa-lcr"
+name="AA-LCR"
+category="Long Context"
+runner="evalscope"
+dataset="aa_lcr"
+reference_score=59.0
+timeout_minutes=240
+exclusive=true
+verified=true
+[[benchmark]]
+id="nolima"
+name="NoLiMa"
+category="Long Context"
+runner="native"
+dataset="nolima"
+reference_score=68.1
+timeout_minutes=360
+exclusive=true
+verified=true
+upstream="https://github.com/adobe-research/NoLiMa"
+license_note="NoLiMa evaluation code/needle set is non-commercial research licensed; AutoBencher does not redistribute it."
+[[benchmark]]
+id="longbenchpro"
+name="LongBenchPro"
+category="Long Context"
+runner="native"
+dataset="longbenchpro"
+reference_score=44.8
+timeout_minutes=360
+exclusive=true
+verified=false
+[[benchmark]]
+id="longbench-v2"
+name="LongBench v2"
+category="Long Context"
+runner="evalscope"
+dataset="longbench_v2"
+reference_score=43.7
+timeout_minutes=360
+exclusive=true
+verified=true
+upstream="https://github.com/THUDM/LongBench"
+
+[[benchmark]]
+id="tau3-banking"
+name="τ³-Bench Banking"
+category="Tool Use"
+runner="native"
+dataset="tau3_banking"
+reference_score=20.8
+timeout_minutes=360
+exclusive=true
+verified=true
+upstream="https://github.com/sierra-research/tau2-bench"
+[[benchmark]]
+id="tau2-telecom"
+name="τ²-Bench Telecom"
+category="Tool Use"
+runner="native"
+dataset="tau2_bench"
+reference_score=97.1
+timeout_minutes=360
+exclusive=true
+verified=true
+upstream="https://github.com/sierra-research/tau2-bench"
+[[benchmark]]
+id="bfcl-v4"
+name="BFCL v4"
+category="Tool Use"
+runner="evalscope"
+dataset="bfcl_v4"
+reference_score=66.6
+timeout_minutes=360
+exclusive=true
+verified=true
+upstream="https://github.com/ShishirPatil/gorilla"
+
+[[benchmark]]
+id="swe-bench-verified"
+name="SWE-bench Verified"
+category="Coding Agent"
+runner="evalscope"
+dataset="swe_bench_verified_agentic"
+evalscope_args=["--agent-config", "{\"mode\":\"native\",\"strategy\":\"swe_bench_toolcall\",\"max_steps\":250}", "--sandbox", "{\"enabled\":true}"]
+reference_score=46.4
+timeout_minutes=720
+exclusive=true
+verified=true
+upstream="https://github.com/SWE-bench/SWE-bench"
+[[benchmark]]
+id="swe-bench-pro"
+name="SWE-bench Pro"
+category="Coding Agent"
+runner="evalscope"
+dataset="swe_bench_pro"
+evalscope_args=["--agent-config", "{\"mode\":\"native\",\"strategy\":\"swe_bench_toolcall\",\"max_steps\":250}", "--sandbox", "{\"enabled\":true}"]
+reference_score=14.4
+timeout_minutes=720
+exclusive=true
+verified=true
+upstream="https://github.com/scaleapi/SWE-bench_Pro-os"
+[[benchmark]]
+id="terminal-bench-v2-1"
+name="Terminal-Bench v2.1"
+category="Coding Agent"
+runner="evalscope"
+dataset="terminal_bench_v2_1"
+reference_score=8.6
+timeout_minutes=720
+exclusive=true
+verified=true
+
+[[benchmark]]
+id="browsecomp-zh"
+name="BrowseComp-ZH"
+category="Search Agent"
+runner="native"
+dataset="browsecomp_zh"
+reference_score=43.5
+timeout_minutes=360
+exclusive=true
+verified=true
+upstream="https://github.com/PALIN2018/BrowseComp-ZH"
+[[benchmark]]
+id="browsecomp-top100"
+name="BrowseComp Top100"
+category="Search Agent"
+runner="native"
+dataset="browsecomp_top100"
+reference_score=39.7
+timeout_minutes=360
+exclusive=true
+verified=false
+[[benchmark]]
+id="gaia-text-103"
+name="GAIA Text-103"
+category="Search Agent"
+runner="native"
+dataset="gaia_text_103"
+reference_score=88.7
+timeout_minutes=360
+exclusive=true
+verified=false
+
+[[benchmark]]
+id="gdpval-aa-v2"
+name="GDPval-AA v2"
+category="General Agent"
+runner="native"
+dataset="gdpval_aa_v2"
+reference_score=19.6
+timeout_minutes=720
+exclusive=true
+verified=false
+license_note="AA/GDPval execution may require third-party judge/sandbox credentials."
+[[benchmark]]
+id="claw-gym"
+name="Claw-Gym"
+category="General Agent"
+runner="native"
+dataset="claw_gym"
+reference_score=59.2
+timeout_minutes=720
+exclusive=true
+verified=false
+[[benchmark]]
+id="wildclaw"
+name="WildClaw"
+category="General Agent"
+runner="native"
+dataset="wildclaw"
+reference_score=23.9
+timeout_minutes=720
+exclusive=true
+verified=false
+[[benchmark]]
+id="qwenclaw"
+name="QwenClaw"
+category="General Agent"
+runner="native"
+dataset="qwenclaw"
+reference_score=42.9
+timeout_minutes=720
+exclusive=true
+verified=false
