@@ -184,9 +184,16 @@ autobencher --config autobencher-litert-dynv3.toml run \
   --only ifeval,gpqa-diamond --limit 1 --no-setup --no-card-check
 ```
 
+Run the BF16 source with the matched deterministic profile before interpreting quant scores:
+
+```bash
+autobencher --config autobencher-bf16-parity.toml run \
+  --only ifeval,gpqa-diamond --limit 1 --no-setup --no-card-check
+```
+
 LiteRT-LM 0.17.0 reads the OpenAI field `max_completion_tokens`, while the EvalScope OpenAI client used by this project supplies the legacy `max_tokens` field. `scripts/litert_openai_proxy.py` mirrors that field so completion limits are actually enforced without changing benchmark prompts. The profile also sets `eval_batch_size = 1`, which is important for a single local LiteRT engine; the general AutoBencher default remains 8.
 
-The real-use 16K/32K/64K sampled results, artifact hashes, run IDs, output hashes, runtime measurements, and limitations are in [`results/minicpm5-dynv3-2026-09-11/REPORT.md`](results/minicpm5-dynv3-2026-09-11/REPORT.md). These sampled scores are integration checks, not full leaderboard reproductions.
+The real-use 16K/32K/64K results are reported relative to the BF16 source in [`results/minicpm5-dynv3-2026-09-11/REPORT.md`](results/minicpm5-dynv3-2026-09-11/REPORT.md). The current evidence includes six BF16-first frozen short-context source-success checks retained by every quant, a matched GPQA-Diamond diagnostic that regresses from BF16 100% to 0% for all three quants, and NoLiMa long-context cases where BF16 succeeds but the quantized artifacts fail retrieval or hit the LiteRT CPU deadline. These are fidelity diagnostics, not full leaderboard reproductions.
 
 ## EvalScope isolation
 

@@ -1,6 +1,6 @@
-model = "minicpm5-dynv3-16k"
-engine = "external"
-api_base = "http://127.0.0.1:9380"
+model = "openbmb/MiniCPM5-2B"
+engine = "wsl-vllm"
+api_base = "http://127.0.0.1:8000"
 api_key_env = "AUTOBENCHER_API_KEY"
 workspace = ".autobencher"
 parallel = 1
@@ -8,7 +8,7 @@ seed = 42
 model_card_url = "https://huggingface.co/openbmb/MiniCPM5-2B/raw/main/README.md"
 evalscope_spec = "evalscope>=1.11.0"
 eval_batch_size = 1
-generation_config = '{"max_tokens":2048,"temperature":0.0,"top_p":1.0}'
+generation_config = '{"max_tokens":2048,"temperature":0.0,"top_p":1.0,"extra_body":{"chat_template_kwargs":{"enable_thinking":false}}}'
 
 [vllm]
 executable = "vllm"

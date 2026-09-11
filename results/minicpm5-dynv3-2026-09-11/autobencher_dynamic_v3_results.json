@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "date": "2026-09-11",
   "target_repo": "Tdamre/MiniCPM5-2B-LiteRT-LongContext",
   "target_repo_revision_before_publish": "6e597b1799c550ee2112ad847df86965a89da2d7",
@@ -64,6 +64,19 @@
           "stop_reason": "stop",
           "output_sha256": "97329a9a098dece14e6afd9ac6c9ea94861b5352eaa4afdf707ffd5dd904a038",
           "status": "completed"
+        },
+        "gpqa-diamond-2048": {
+          "run_id": "543456ae-19e4-48e7-a316-76c5e4c9ba2f",
+          "primary_score_percent": 0.0,
+          "duration_seconds": 100.973,
+          "model_latency_seconds": 96.453,
+          "input_tokens": 156,
+          "output_tokens": 401,
+          "reasoning_tokens": 0,
+          "stop_reason": "stop",
+          "output_sha256": "97329a9a098dece14e6afd9ac6c9ea94861b5352eaa4afdf707ffd5dd904a038",
+          "status": "completed",
+          "max_tokens": 2048
         }
       }
     },
@@ -95,6 +108,19 @@
           "stop_reason": "stop",
           "output_sha256": "97329a9a098dece14e6afd9ac6c9ea94861b5352eaa4afdf707ffd5dd904a038",
           "status": "completed"
+        },
+        "gpqa-diamond-2048": {
+          "run_id": "f7cecbf8-62bd-4baf-9c4c-2ad8c91b7b02",
+          "primary_score_percent": 0.0,
+          "duration_seconds": 142.574,
+          "model_latency_seconds": 138.0,
+          "input_tokens": 156,
+          "output_tokens": 401,
+          "reasoning_tokens": 0,
+          "stop_reason": "stop",
+          "output_sha256": "97329a9a098dece14e6afd9ac6c9ea94861b5352eaa4afdf707ffd5dd904a038",
+          "status": "completed",
+          "max_tokens": 2048
         }
       }
     },
@@ -126,6 +152,19 @@
           "stop_reason": "stop",
           "output_sha256": "97329a9a098dece14e6afd9ac6c9ea94861b5352eaa4afdf707ffd5dd904a038",
           "status": "completed"
+        },
+        "gpqa-diamond-2048": {
+          "run_id": "a89fc032-4008-4a6b-811a-b9a3773af1f4",
+          "primary_score_percent": 0.0,
+          "duration_seconds": 225.419,
+          "model_latency_seconds": 220.797,
+          "input_tokens": 156,
+          "output_tokens": 401,
+          "reasoning_tokens": 0,
+          "stop_reason": "stop",
+          "output_sha256": "97329a9a098dece14e6afd9ac6c9ea94861b5352eaa4afdf707ffd5dd904a038",
+          "status": "completed",
+          "max_tokens": 2048
         }
       }
     }
@@ -134,5 +173,223 @@
     "legacy_max_tokens_gap": "LiteRT-LM 0.17 OpenAI handler reads max_completion_tokens; EvalScope legacy max_tokens was not honored directly. A local proxy translated the field for publishable runs.",
     "direct_cap_validation": "A deliberately long request through the proxy with max_tokens=16 returned exactly 16 completion tokens.",
     "math500_probe": "An earlier unproxied MATH-500 sample ran for over 10 minutes because the legacy token cap was ignored; it was cancelled and is excluded from scored results."
+  },
+  "bf16_baseline": {
+    "model": "openbmb/MiniCPM5-2B local BF16 checkpoint",
+    "backend": "vLLM 0.29.0 on RTX 4090",
+    "thinking": false,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "eval_batch_size": 1,
+    "evalscope_version": "1.11.1",
+    "benchmarks": {
+      "ifeval": {
+        "run_id": "a565b4b3-bacc-4000-9b9d-c454f24a7ccf",
+        "primary_score_percent": 100.0,
+        "duration_seconds": 8.121,
+        "model_latency_seconds": 3.313,
+        "input_tokens": 90,
+        "output_tokens": 373,
+        "reasoning_tokens": null,
+        "stop_reason": "stop",
+        "output_sha256": "c637072bdd6065c4424ac2fc1a1af7474e48bdd4cdb9a327a3324dea1e051d8c",
+        "status": "completed",
+        "max_tokens": 512
+      },
+      "gpqa-diamond": {
+        "run_id": "df9a43a7-2c0b-4252-85a6-8eb647aaf6e4",
+        "primary_score_percent": 100.0,
+        "duration_seconds": 18.246,
+        "model_latency_seconds": 13.687,
+        "input_tokens": 156,
+        "output_tokens": 1447,
+        "reasoning_tokens": null,
+        "stop_reason": "stop",
+        "output_sha256": "7ae7fdea3a6a7dd8ceea6e9678e1aec68d85aa65169109e1b0cc7633f7f0fe2c",
+        "status": "completed",
+        "max_tokens": 2048
+      }
+    }
+  },
+  "matched_bf16_comparison": {
+    "ifeval": {
+      "max_tokens": 512,
+      "bf16_score_percent": 100.0,
+      "bf16_output_tokens": 373,
+      "bf16_stop_reason": "stop",
+      "bf16_output_sha256": "c637072bdd6065c4424ac2fc1a1af7474e48bdd4cdb9a327a3324dea1e051d8c",
+      "variants": {
+        "16k": {
+          "quant_score_percent": 100.0,
+          "delta_vs_bf16_pp": 0.0,
+          "quant_output_tokens": 410,
+          "quant_stop_reason": "stop",
+          "quant_output_sha256": "d37834c4483ca6d5c736251a7163af8e1be8522c0fb33d23dcab56721d45c27c"
+        },
+        "32k": {
+          "quant_score_percent": 100.0,
+          "delta_vs_bf16_pp": 0.0,
+          "quant_output_tokens": 410,
+          "quant_stop_reason": "stop",
+          "quant_output_sha256": "d37834c4483ca6d5c736251a7163af8e1be8522c0fb33d23dcab56721d45c27c"
+        },
+        "64k": {
+          "quant_score_percent": 100.0,
+          "delta_vs_bf16_pp": 0.0,
+          "quant_output_tokens": 410,
+          "quant_stop_reason": "stop",
+          "quant_output_sha256": "d37834c4483ca6d5c736251a7163af8e1be8522c0fb33d23dcab56721d45c27c"
+        }
+      }
+    },
+    "gpqa-diamond": {
+      "max_tokens": 2048,
+      "bf16_score_percent": 100.0,
+      "bf16_output_tokens": 1447,
+      "bf16_stop_reason": "stop",
+      "bf16_output_sha256": "7ae7fdea3a6a7dd8ceea6e9678e1aec68d85aa65169109e1b0cc7633f7f0fe2c",
+      "variants": {
+        "16k": {
+          "quant_score_percent": 0.0,
+          "delta_vs_bf16_pp": -100.0,
+          "quant_output_tokens": 401,
+          "quant_stop_reason": "stop",
+          "quant_output_sha256": "97329a9a098dece14e6afd9ac6c9ea94861b5352eaa4afdf707ffd5dd904a038"
+        },
+        "32k": {
+          "quant_score_percent": 0.0,
+          "delta_vs_bf16_pp": -100.0,
+          "quant_output_tokens": 401,
+          "quant_stop_reason": "stop",
+          "quant_output_sha256": "97329a9a098dece14e6afd9ac6c9ea94861b5352eaa4afdf707ffd5dd904a038"
+        },
+        "64k": {
+          "quant_score_percent": 0.0,
+          "delta_vs_bf16_pp": -100.0,
+          "quant_output_tokens": 401,
+          "quant_stop_reason": "stop",
+          "quant_output_sha256": "97329a9a098dece14e6afd9ac6c9ea94861b5352eaa4afdf707ffd5dd904a038"
+        }
+      }
+    }
+  },
+  "matched_bf16_comparison_summary": {
+    "bf16_source_passing_items": 2,
+    "items_retained_by_each_quant": 1,
+    "sampled_retention_percent": 50.0,
+    "interpretation": "Two-item diagnostic only: IFEval retained; GPQA-Diamond regressed from BF16 100% to quant 0% for all three variants."
+  },
+  "frozen_bf16_first_short_context_retention": {
+    "protocol": "BF16-first frozen retention suite. For each ordinary benchmark, source BF16 was scanned first and the first source-passing item was frozen before quant outputs were inspected. enable_thinking=False and greedy decoding were used for deterministic quantization-fidelity checks. SWE-bench is a bounded semantic-patch proxy where BF16 itself fails; Claw-Gym is a bounded content proxy; GAIA uses frozen evidence rather than live browsing. These are not full leaderboard runs.",
+    "source_success_benchmarks": [
+      "LiveCodeBench_v6",
+      "MATH_500",
+      "IFEval",
+      "MMLU_Pro",
+      "BFCL_v4",
+      "GAIA_Text_103"
+    ],
+    "bf16_scores": {
+      "LiveCodeBench_v6": 1.0,
+      "MATH_500": 1.0,
+      "IFEval": 1.0,
+      "MMLU_Pro": 1.0,
+      "BFCL_v4": 1.0,
+      "GAIA_Text_103": 1.0
+    },
+    "variants": {
+      "16k": {
+        "scores": {
+          "LiveCodeBench_v6": 1.0,
+          "MATH_500": 1.0,
+          "IFEval": 1.0,
+          "MMLU_Pro": 1.0,
+          "BFCL_v4": 1.0,
+          "GAIA_Text_103": 1.0
+        },
+        "retained": 6,
+        "total": 6,
+        "retention_percent": 100.0
+      },
+      "32k": {
+        "scores": {
+          "LiveCodeBench_v6": 1.0,
+          "MATH_500": 1.0,
+          "IFEval": 1.0,
+          "MMLU_Pro": 1.0,
+          "BFCL_v4": 1.0,
+          "GAIA_Text_103": 1.0
+        },
+        "retained": 6,
+        "total": 6,
+        "retention_percent": 100.0
+      },
+      "64k": {
+        "scores": {
+          "LiveCodeBench_v6": 1.0,
+          "MATH_500": 1.0,
+          "IFEval": 1.0,
+          "MMLU_Pro": 1.0,
+          "BFCL_v4": 1.0,
+          "GAIA_Text_103": 1.0
+        },
+        "retained": 6,
+        "total": 6,
+        "retention_percent": 100.0
+      }
+    },
+    "excluded_from_source_success_denominator": {
+      "SWE_bench_Verified": "BF16 itself scored 0 on the bounded semantic-patch proxy",
+      "Claw_Gym": "BF16 score was 0.8889 on a bounded content proxy rather than a clean pass"
+    }
+  },
+  "long_context_bf16_comparison": {
+    "benchmark": "NoLiMa-Hard",
+    "case": "0408Inv_T04_C02_twohop",
+    "gold": "Yuki",
+    "comparisons": [
+      {
+        "pair": "BF16 12K vs DynV3 16K at ~12K",
+        "bf16_tokens": 12114,
+        "bf16_response": "Yuki",
+        "bf16_exact_match": 1,
+        "quant_response": "Rebecca",
+        "quant_exact_match": 0,
+        "delta_pp": -100
+      },
+      {
+        "pair": "BF16 24K vs DynV3 32K at ~24K",
+        "bf16_tokens": 24114,
+        "bf16_response": "Yuki",
+        "bf16_exact_match": 1,
+        "quant_response": "Rebecca",
+        "quant_exact_match": 0,
+        "delta_pp": -100
+      },
+      {
+        "pair": "BF16 40K vs DynV3 64K at ~40K",
+        "bf16_tokens": 40114,
+        "bf16_response": "Yuki",
+        "bf16_exact_match": 1,
+        "quant_status": "DEADLINE_EXCEEDED",
+        "quant_detail": "LiteRT-LM 0.17 stock Engine::kDefaultTimeout is hard-coded to 10 minutes; XNNPACK CPU prefill did not complete before the deadline. Not scored as a wrong model answer.",
+        "delta_pp": null
+      },
+      {
+        "pair": "BF16 12K vs DynV3 64K supplemental at ~12K",
+        "bf16_tokens": 12114,
+        "bf16_response": "Yuki",
+        "bf16_exact_match": 1,
+        "quant_response": "Rebecca",
+        "quant_exact_match": 0,
+        "delta_pp": -100
+      }
+    ],
+    "interpretation": "Clear long-context degradation relative to BF16: wrong retrieval for 16K/32K and the 64K supplemental 12K case; the 64K ~40K case is additionally blocked by LiteRT-LM 0.17 CPU session deadline."
+  },
+  "conclusion": {
+    "short_context": "No loss on the six BF16-first frozen source-success retention checks, but the matched AutoBencher GPQA diagnostic shows a real reasoning regression (BF16 100%, all three quants 0%).",
+    "long_context": "Material degradation is present: BF16 succeeds on the selected NoLiMa case at ~12K/~24K/~40K, while the corresponding Dynamic-v3 artifacts fail retrieval or exceed the LiteRT session deadline.",
+    "latency_note": "Do not compare BF16 and LiteRT latency directly: BF16 ran on RTX 4090 via vLLM while LiteRT benchmark claims used XNNPACK CPU because the available WebGPU path selected software llvmpipe."
   }
 }

@@ -1,63 +1,102 @@
-# AutoBencher Dynamic-v3 LiteRT sampled integration results
+# MiniCPM5 Dynamic-v3 LiteRT — BF16-relative AutoBencher report
 
 **Date:** 2026-09-11
 **Target:** `Tdamre/MiniCPM5-2B-LiteRT-LongContext`
-**Scope:** real-use sampled integration test, **not** a formal leaderboard reproduction.
+**Purpose:** quantify degradation relative to the original BF16 `openbmb/MiniCPM5-2B`, not merely report standalone quant scores.
 
-## Protocol
+## Main finding
 
-- AutoBencher base: `14ae60899ddcf04d57b7c69a9b4a5612dc71d3ed` plus the LiteRT compatibility changes in this result update.
-- EvalScope 1.11.1; LiteRT-LM 0.17.0; WSL2 CPU/XNNPACK; 32 CPU threads.
-- `thinking=false`, greedy (`temperature=0`, `top_p=1`), seed 42, evaluator batch size 1.
-- `--limit 1`: exactly one item per EvalScope subset. IFEval and GPQA-Diamond each expose one selected subset here.
-- 512-token completion cap. A local compatibility proxy mirrors EvalScope/OpenAI `max_tokens` to LiteRT-LM `max_completion_tokens`.
+The Dynamic-v3-inspired LiteRT artifacts are **not lossless relative to BF16**.
 
-## Results
+On short-context frozen source-success checks, all three variants retained the BF16 result on six selected checks: LiveCodeBench v6, MATH-500, IFEval, MMLU-Pro, BFCL v4, and GAIA Text-103 (**6/6 retained for each artifact**). However, a fresh matched AutoBencher GPQA-Diamond diagnostic found a clear reasoning regression: BF16 solves the sampled item with a 2,048-token ceiling, while all three quantized variants terminate naturally on the same wrong answer.
 
-| Variant | IFEval | IFEval latency | GPQA-Diamond | GPQA latency | Run ID |
+Long-context retrieval shows a stronger degradation signal. On the selected NoLiMa-Hard case, BF16 succeeds at approximately 12K, 24K, and 40K rendered tokens. The 16K and 32K Dynamic-v3 artifacts return the wrong character at their corresponding long-context lengths; the 64K artifact also returns the wrong character on the supplemental ~12K test, while its ~40K test exceeds LiteRT-LM 0.17's hard 10-minute CPU session deadline.
+
+## Fresh matched AutoBencher comparison
+
+Settings shared within each score comparison: EvalScope 1.11.1, `enable_thinking=false`, greedy decoding (`temperature=0`, `top_p=1`), batch size 1, identical benchmark item and evaluator. BF16 used vLLM 0.29.0; LiteRT used LiteRT-LM 0.17.0 with the compatibility proxy that maps `max_tokens` to `max_completion_tokens`.
+
+| Benchmark | BF16 | DynV3 16K | DynV3 32K | DynV3 64K | Interpretation |
 |---|---:|---:|---:|---:|---|
-| 16K | 100% | 92.500s | 0% | 91.188s | `6d9c67f3-983c-4c17-97fe-4632cb6c9bd9` |
-| 32K | 100% | 133.562s | 0% | 142.000s | `ee2b4179-a527-4d1e-924b-0fd5ea928c57` |
-| 64K | 100% | 231.860s | 0% | 215.890s | `9eb75ebd-17bd-4e9f-bbb8-cb7101c3019b` |
+| IFEval item 0, 512-token ceiling | **100%** | **100%** | **100%** | **100%** | retained |
+| GPQA-Diamond item 0, 2,048-token ceiling | **100%** | **0%** | **0%** | **0%** | **-100 pp regression** |
 
-The IFEval response used 410 output tokens and the GPQA-Diamond response used 401 output tokens for every variant, both below the enforced 512-token cap. Reasoning-token accounting was 0 because server-side thinking was disabled.
+The two-item matched diagnostic therefore retains **1/2 BF16-passing items (50%)** for each quant. This percentage is a diagnostic, not a benchmark-wide estimate; the item count is too small for a leaderboard-style claim.
 
-### Cross-variant determinism
+### Why the GPQA rerun matters
 
-For each benchmark, the complete generated text was byte-identical across 16K, 32K and 64K. The SHA-256 hashes were:
+The first BF16 GPQA attempt used a 512-token ceiling and was truncated at exactly 512 tokens, so its initial 0% result was not a valid degradation baseline. The corrected BF16 run used a 2,048-token ceiling and:
 
-- IFEval: `d37834c4483ca6d5c736251a7163af8e1be8522c0fb33d23dcab56721d45c27c`
-- GPQA-Diamond: `97329a9a098dece14e6afd9ac6c9ea94861b5352eaa4afdf707ffd5dd904a038`
+- scored **100%**;
+- stopped naturally after **1,447 output tokens**;
+- selected the correct `10^-4 eV` answer;
+- AutoBencher run ID: `df9a43a7-2c0b-4252-85a6-8eb647aaf6e4`.
 
-This is strong evidence that the three context-capacity artifacts preserve the same short-context behavior under this deterministic protocol. It is **not** evidence that their full-benchmark accuracy is 100%/0%; each score is from one sampled item only.
+All three quantized reruns used the same 2,048-token ceiling and still:
 
-### Runtime scaling
+- scored **0%**;
+- stopped naturally after **401 output tokens** rather than hitting the ceiling;
+- produced the same wrong output byte-for-byte (`SHA256 97329a9a098dece14e6afd9ac6c9ea94861b5352eaa4afdf707ffd5dd904a038`).
 
-The same byte-identical outputs became slower as the configured context capacity increased:
+Matched quant run IDs:
 
-- 16K: IFEval 92.500s; GPQA 91.188s
-- 32K: IFEval 133.562s; GPQA 142.000s
-- 64K: IFEval 231.860s; GPQA 215.890s
+- 16K: `543456ae-19e4-48e7-a316-76c5e4c9ba2f`
+- 32K: `f7cecbf8-62bd-4baf-9c4c-2ad8c91b7b02`
+- 64K: `a89fc032-4008-4a6b-811a-b9a3773af1f4`
 
-That makes context capacity a meaningful CPU runtime/memory trade-off even when model behavior is unchanged on short prompts.
+This is a clean quantization-fidelity failure on the sampled GPQA problem rather than a timeout or output-cap artifact.
 
-## Registry coverage
+## BF16-first frozen short-context retention suite
 
-A full AutoBencher dry-run was also performed for each variant. Each traversed all 34 MiniCPM5 model-card rows: 20 have bundled runnable plans and 14 remain explicitly blocked where exact public reproduction prerequisites are unavailable. There were no dry-run infrastructure failures/timeouts.
+Before inspecting the quant outputs, BF16 was scanned and source-passing items were frozen. The following six clean source-success items were then replayed identically on all three LiteRT artifacts.
 
-Dry-run IDs:
-- 16K: `040f10f8-130c-46e9-a0ad-758e282c4abc`
-- 32K: `b17f6e34-798f-4831-866b-5cc015b759da`
-- 64K: `2e64bee4-6893-4f08-bfea-02b97c77179f`
+| Frozen check | BF16 | DynV3 16K | DynV3 32K | DynV3 64K |
+|---|---:|---:|---:|---:|
+| LiveCodeBench v6 | 1 | 1 | 1 | 1 |
+| MATH-500 | 1 | 1 | 1 | 1 |
+| IFEval | 1 | 1 | 1 | 1 |
+| MMLU-Pro | 1 | 1 | 1 | 1 |
+| BFCL v4 | 1 | 1 | 1 | 1 |
+| GAIA Text-103 | 1 | 1 | 1 | 1 |
+| **Source-success retention** | **6/6** | **6/6** | **6/6** | **6/6** |
 
-## LiteRT compatibility finding
+SWE-bench Verified is excluded from that denominator because the bounded BF16 semantic-patch proxy itself scored 0. Claw-Gym is also excluded because it is a bounded output-content proxy and BF16 scored 8/9 checks rather than a clean pass. Their quant scores matched the BF16 proxy scores, but neither is suitable as a clean source-success fidelity item.
 
-LiteRT-LM 0.17.0 reads `max_completion_tokens` in its OpenAI-compatible handler, while EvalScope supplies the legacy `max_tokens` parameter. Direct LiteRT serving therefore ignored the intended cap. The added local proxy mirrors `max_tokens` into `max_completion_tokens`; a validation request capped at 16 tokens returned exactly 16 completion tokens.
+The frozen suite and the fresh GPQA result are not contradictory: they show that these mixed-precision quants preserve several selected short-context behaviors while still having at least one reproducible reasoning regression.
 
-An earlier MATH-500 diagnostic launched before this translation existed generated for more than ten minutes and was cancelled. It is intentionally excluded from scored results.
+## Long-context BF16 degradation comparison
 
-## Artifact identity
+Selected NoLiMa-Hard case: `0408Inv_T04_C02_twohop` — question: **Which character has been to Madrid?** Gold: **Yuki**.
 
-- 16K (16,384 tokens): `MiniCPM5-2B-LiteRT-DynV3Mixed-16k.litertlm` — SHA-256 `deb0a0f15027542f98079f3d515d42254dc4dd7aeb3dc49cbb2bd733ada1c8be`
-- 32K (32,768 tokens): `MiniCPM5-2B-LiteRT-DynV3Mixed-32k.litertlm` — SHA-256 `67416815468538c24d92249f62a86feab0d1ace2086eda79fce12c2296264c82`
-- 64K (65,536 tokens): `MiniCPM5-2B-LiteRT-DynV3Mixed-64k.litertlm` — SHA-256 `f403c5cc32da5464b866595c4ddb71ffdffc3571c45bf2047c639737984f841e`
+| Comparison | BF16 | Dynamic-v3 | Delta / result |
+|---|---|---|---|
+| ~12K rendered tokens: BF16 vs 16K artifact | `Yuki` ✅ | `Rebecca` ❌ | **-100 pp** |
+| ~24K rendered tokens: BF16 vs 32K artifact | `Yuki` ✅ | `Rebecca` ❌ | **-100 pp** |
+| ~40K rendered tokens: BF16 vs 64K artifact | `Yuki` ✅ | 10-minute LiteRT deadline | not scored; practical runtime failure |
+| ~12K supplemental: BF16 vs 64K artifact | `Yuki` ✅ | `Rebecca` ❌ | **-100 pp** |
+
+Rendered prompt token counts were 12,114 / 24,114 / 40,114 for the corresponding BF16 tests. The selected case was chosen from a BF16-only scan before quant outputs were inspected.
+
+This is the strongest current evidence of degradation: **BF16 retrieval succeeds where the quantized models return the wrong entity**, and the largest LiteRT context configuration additionally becomes impractical on the current CPU runtime at ~40K tokens.
+
+## Latency is not a fair BF16-vs-quant comparison
+
+Do **not** infer that BF16 is intrinsically faster from these runs. BF16 was served through vLLM on an RTX 4090, while the LiteRT benchmark claims used XNNPACK CPU because the available WSL WebGPU path selected Mesa `llvmpipe` rather than the RTX 4090. The scores and deterministic outputs are useful for fidelity comparison; cross-backend latency is not.
+
+Within the LiteRT artifacts themselves, the same short prompts became progressively slower as the configured context capacity increased. That remains a useful practical observation for these artifacts/runtime combinations.
+
+## Artifact identities
+
+| Variant | Context | SHA-256 |
+|---|---:|---|
+| `MiniCPM5-2B-LiteRT-DynV3Mixed-16k.litertlm` | 16,384 | `deb0a0f15027542f98079f3d515d42254dc4dd7aeb3dc49cbb2bd733ada1c8be` |
+| `MiniCPM5-2B-LiteRT-DynV3Mixed-32k.litertlm` | 32,768 | `67416815468538c24d92249f62a86feab0d1ace2086eda79fce12c2296264c82` |
+| `MiniCPM5-2B-LiteRT-DynV3Mixed-64k.litertlm` | 65,536 | `f403c5cc32da5464b866595c4ddb71ffdffc3571c45bf2047c639737984f841e` |
+
+## Scope
+
+These are targeted quantization-fidelity diagnostics, **not full leaderboard reproductions**. The correct conclusion is not that the quants are globally 50% worse or that GPQA is 0% overall. The evidence supports a narrower but important statement:
+
+> The Dynamic-v3-inspired LiteRT variants preserve all six selected frozen short-context BF16-success cases, but measurable degradation exists: all three lose a BF16-correct GPQA-Diamond sample, and long-context NoLiMa retrieval degrades substantially relative to BF16.
+
+Machine-readable evidence is in `autobencher_dynamic_v3_results.json`. The earlier full retention details remain in the Hugging Face repository's `dynamic_v3_benchmark_results.json`.
