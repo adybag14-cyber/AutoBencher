@@ -1,0 +1,9 @@
+{
+  "status": "calibration_completed",
+  "artifact_status": "not_yet_reported",
+  "near_lossless_demonstrated": false,
+  "scope": "OCTAV-aware independent LiteRT adaptation; experimental",
+  "test_evidence": {
+    "actual_quantizer_tests": "2 tests passed in WSL before branch synchronization"
+  }
+}
