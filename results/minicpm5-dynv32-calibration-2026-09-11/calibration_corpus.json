@@ -1,0 +1,1010 @@
+[
+  {
+    "id": "cal-00-math",
+    "category": "math",
+    "messages": [
+      {
+        "role": "user",
+        "content": "A workshop has 31 boxes with 4 sensors each. It removes 18 sensors. Explain the count."
+      },
+      {
+        "role": "assistant",
+        "content": "Initially there are 31 times 4, or 124, sensors. Removing 18 gives 106. A reverse check adds 18 back to obtain 124. The final count is 106 sensors."
+      }
+    ]
+  },
+  {
+    "id": "cal-00-code",
+    "category": "code",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Write a Python function returning the first 18 squares, with input validation and tests."
+      },
+      {
+        "role": "assistant",
+        "content": "def squares(n: int) -> list[int]:\n    if isinstance(n, bool) or not isinstance(n, int) or n < 0:\n        raise ValueError(\"n must be a nonnegative integer\")\n    return [i * i for i in range(n)]\n\nassert squares(0) == []\nassert squares(3) == [0, 1, 4]\nThe function takes O(n) time and output space; validation handles negative and noninteger input."
+      }
+    ]
+  },
+  {
+    "id": "cal-00-agent",
+    "category": "agent",
+    "messages": [
+      {
+        "role": "user",
+        "content": "An API allows 4 requests per minute. Explain a safe plan for fetching 31 pages without losing progress."
+      },
+      {
+        "role": "assistant",
+        "content": "First confirm pagination and rate-limit headers. Keep a durable cursor after each completed page. Respect Retry-After, apply exponential backoff with jitter to transient failures, and use bounded retries. Never retry a non-idempotent operation blindly. Record failures separately from successful pages. Validate the final item count and avoid logging credentials."
+      }
+    ]
+  },
+  {
+    "id": "cal-00-chat",
+    "category": "chat",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Return JSON with item=\"sensor\", quantity=31, unit_price=4, and the calculated total. Then explain the calculation."
+      },
+      {
+        "role": "assistant",
+        "content": "{\"item\": \"sensor\", \"quantity\": 31, \"unit_price\": 4, \"total\": 124}\nThe total is quantity multiplied by unit price: 31 × 4 = 124."
+      }
+    ]
+  },
+  {
+    "id": "cal-00-multilingual",
+    "category": "multilingual",
+    "messages": [
+      {
+        "role": "user",
+        "content": "用中文和西班牙语解释：31 个盒子，每盒 4 件，一共有多少件？"
+      },
+      {
+        "role": "assistant",
+        "content": "中文：共有 31 × 4 = 124 件。乘法把相同数量的组相加。\nEspañol: Hay 31 cajas de 4 unidades cada una; por tanto, hay 124 unidades. La multiplicación representa la suma de grupos iguales."
+      }
+    ]
+  },
+  {
+    "id": "cal-00-reasoning",
+    "category": "reasoning",
+    "messages": [
+      {
+        "role": "user",
+        "content": "A service must use less than 31 MB of memory and respond in 4 milliseconds. Explain the limits of choosing a design without measurements."
+      },
+      {
+        "role": "assistant",
+        "content": "Requirements do not by themselves establish feasibility. Measure representative requests, peak memory, and tail latency on the target device. Distinguish cached and uncached operation, include concurrency, and report the workload and sample count. A smaller data structure may save memory but increase lookup cost. Prefer a prototype and explicit failure thresholds over an unsupported guarantee."
+      }
+    ]
+  },
+  {
+    "id": "cal-01-math",
+    "category": "math",
+    "messages": [
+      {
+        "role": "user",
+        "content": "A workshop has 16 boxes with 4 sensors each. It removes 13 sensors. Explain the count."
+      },
+      {
+        "role": "assistant",
+        "content": "Initially there are 16 times 4, or 64, sensors. Removing 13 gives 51. A reverse check adds 13 back to obtain 64. The final count is 51 sensors."
+      }
+    ]
+  },
+  {
+    "id": "cal-01-code",
+    "category": "code",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Write a Python function returning the first 13 squares, with input validation and tests."
+      },
+      {
+        "role": "assistant",
+        "content": "def squares(n: int) -> list[int]:\n    if isinstance(n, bool) or not isinstance(n, int) or n < 0:\n        raise ValueError(\"n must be a nonnegative integer\")\n    return [i * i for i in range(n)]\n\nassert squares(0) == []\nassert squares(3) == [0, 1, 4]\nThe function takes O(n) time and output space; validation handles negative and noninteger input."
+      }
+    ]
+  },
+  {
+    "id": "cal-01-agent",
+    "category": "agent",
+    "messages": [
+      {
+        "role": "user",
+        "content": "An API allows 4 requests per minute. Explain a safe plan for fetching 16 pages without losing progress."
+      },
+      {
+        "role": "assistant",
+        "content": "First confirm pagination and rate-limit headers. Keep a durable cursor after each completed page. Respect Retry-After, apply exponential backoff with jitter to transient failures, and use bounded retries. Never retry a non-idempotent operation blindly. Record failures separately from successful pages. Validate the final item count and avoid logging credentials."
+      }
+    ]
+  },
+  {
+    "id": "cal-01-chat",
+    "category": "chat",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Return JSON with item=\"sensor\", quantity=16, unit_price=4, and the calculated total. Then explain the calculation."
+      },
+      {
+        "role": "assistant",
+        "content": "{\"item\": \"sensor\", \"quantity\": 16, \"unit_price\": 4, \"total\": 64}\nThe total is quantity multiplied by unit price: 16 × 4 = 64."
+      }
+    ]
+  },
+  {
+    "id": "cal-01-multilingual",
+    "category": "multilingual",
+    "messages": [
+      {
+        "role": "user",
+        "content": "用中文和西班牙语解释：16 个盒子，每盒 4 件，一共有多少件？"
+      },
+      {
+        "role": "assistant",
+        "content": "中文：共有 16 × 4 = 64 件。乘法把相同数量的组相加。\nEspañol: Hay 16 cajas de 4 unidades cada una; por tanto, hay 64 unidades. La multiplicación representa la suma de grupos iguales."
+      }
+    ]
+  },
+  {
+    "id": "cal-01-reasoning",
+    "category": "reasoning",
+    "messages": [
+      {
+        "role": "user",
+        "content": "A service must use less than 16 MB of memory and respond in 4 milliseconds. Explain the limits of choosing a design without measurements."
+      },
+      {
+        "role": "assistant",
+        "content": "Requirements do not by themselves establish feasibility. Measure representative requests, peak memory, and tail latency on the target device. Distinguish cached and uncached operation, include concurrency, and report the workload and sample count. A smaller data structure may save memory but increase lookup cost. Prefer a prototype and explicit failure thresholds over an unsupported guarantee."
+      }
+    ]
+  },
+  {
+    "id": "cal-02-math",
+    "category": "math",
+    "messages": [
+      {
+        "role": "user",
+        "content": "A workshop has 58 boxes with 7 sensors each. It removes 26 sensors. Explain the count."
+      },
+      {
+        "role": "assistant",
+        "content": "Initially there are 58 times 7, or 406, sensors. Removing 26 gives 380. A reverse check adds 26 back to obtain 406. The final count is 380 sensors."
+      }
+    ]
+  },
+  {
+    "id": "cal-02-code",
+    "category": "code",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Write a Python function returning the first 26 squares, with input validation and tests."
+      },
+      {
+        "role": "assistant",
+        "content": "def squares(n: int) -> list[int]:\n    if isinstance(n, bool) or not isinstance(n, int) or n < 0:\n        raise ValueError(\"n must be a nonnegative integer\")\n    return [i * i for i in range(n)]\n\nassert squares(0) == []\nassert squares(3) == [0, 1, 4]\nThe function takes O(n) time and output space; validation handles negative and noninteger input."
+      }
+    ]
+  },
+  {
+    "id": "cal-02-agent",
+    "category": "agent",
+    "messages": [
+      {
+        "role": "user",
+        "content": "An API allows 7 requests per minute. Explain a safe plan for fetching 58 pages without losing progress."
+      },
+      {
+        "role": "assistant",
+        "content": "First confirm pagination and rate-limit headers. Keep a durable cursor after each completed page. Respect Retry-After, apply exponential backoff with jitter to transient failures, and use bounded retries. Never retry a non-idempotent operation blindly. Record failures separately from successful pages. Validate the final item count and avoid logging credentials."
+      }
+    ]
+  },
+  {
+    "id": "cal-02-chat",
+    "category": "chat",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Return JSON with item=\"sensor\", quantity=58, unit_price=7, and the calculated total. Then explain the calculation."
+      },
+      {
+        "role": "assistant",
+        "content": "{\"item\": \"sensor\", \"quantity\": 58, \"unit_price\": 7, \"total\": 406}\nThe total is quantity multiplied by unit price: 58 × 7 = 406."
+      }
+    ]
+  },
+  {
+    "id": "cal-02-multilingual",
+    "category": "multilingual",
+    "messages": [
+      {
+        "role": "user",
+        "content": "用中文和西班牙语解释：58 个盒子，每盒 7 件，一共有多少件？"
+      },
+      {
+        "role": "assistant",
+        "content": "中文：共有 58 × 7 = 406 件。乘法把相同数量的组相加。\nEspañol: Hay 58 cajas de 7 unidades cada una; por tanto, hay 406 unidades. La multiplicación representa la suma de grupos iguales."
+      }
+    ]
+  },
+  {
+    "id": "cal-02-reasoning",
+    "category": "reasoning",
+    "messages": [
+      {
+        "role": "user",
+        "content": "A service must use less than 58 MB of memory and respond in 7 milliseconds. Explain the limits of choosing a design without measurements."
+      },
+      {
+        "role": "assistant",
+        "content": "Requirements do not by themselves establish feasibility. Measure representative requests, peak memory, and tail latency on the target device. Distinguish cached and uncached operation, include concurrency, and report the workload and sample count. A smaller data structure may save memory but increase lookup cost. Prefer a prototype and explicit failure thresholds over an unsupported guarantee."
+      }
+    ]
+  },
+  {
+    "id": "cal-03-math",
+    "category": "math",
+    "messages": [
+      {
+        "role": "user",
+        "content": "A workshop has 20 boxes with 14 sensors each. It removes 8 sensors. Explain the count."
+      },
+      {
+        "role": "assistant",
+        "content": "Initially there are 20 times 14, or 280, sensors. Removing 8 gives 272. A reverse check adds 8 back to obtain 280. The final count is 272 sensors."
+      }
+    ]
+  },
+  {
+    "id": "cal-03-code",
+    "category": "code",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Write a Python function returning the first 8 squares, with input validation and tests."
+      },
+      {
+        "role": "assistant",
+        "content": "def squares(n: int) -> list[int]:\n    if isinstance(n, bool) or not isinstance(n, int) or n < 0:\n        raise ValueError(\"n must be a nonnegative integer\")\n    return [i * i for i in range(n)]\n\nassert squares(0) == []\nassert squares(3) == [0, 1, 4]\nThe function takes O(n) time and output space; validation handles negative and noninteger input."
+      }
+    ]
+  },
+  {
+    "id": "cal-03-agent",
+    "category": "agent",
+    "messages": [
+      {
+        "role": "user",
+        "content": "An API allows 14 requests per minute. Explain a safe plan for fetching 20 pages without losing progress."
+      },
+      {
+        "role": "assistant",
+        "content": "First confirm pagination and rate-limit headers. Keep a durable cursor after each completed page. Respect Retry-After, apply exponential backoff with jitter to transient failures, and use bounded retries. Never retry a non-idempotent operation blindly. Record failures separately from successful pages. Validate the final item count and avoid logging credentials."
+      }
+    ]
+  },
+  {
+    "id": "cal-03-chat",
+    "category": "chat",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Return JSON with item=\"sensor\", quantity=20, unit_price=14, and the calculated total. Then explain the calculation."
+      },
+      {
+        "role": "assistant",
+        "content": "{\"item\": \"sensor\", \"quantity\": 20, \"unit_price\": 14, \"total\": 280}\nThe total is quantity multiplied by unit price: 20 × 14 = 280."
+      }
+    ]
+  },
+  {
+    "id": "cal-03-multilingual",
+    "category": "multilingual",
+    "messages": [
+      {
+        "role": "user",
+        "content": "用中文和西班牙语解释：20 个盒子，每盒 14 件，一共有多少件？"
+      },
+      {
+        "role": "assistant",
+        "content": "中文：共有 20 × 14 = 280 件。乘法把相同数量的组相加。\nEspañol: Hay 20 cajas de 14 unidades cada una; por tanto, hay 280 unidades. La multiplicación representa la suma de grupos iguales."
+      }
+    ]
+  },
+  {
+    "id": "cal-03-reasoning",
+    "category": "reasoning",
+    "messages": [
+      {
+        "role": "user",
+        "content": "A service must use less than 20 MB of memory and respond in 14 milliseconds. Explain the limits of choosing a design without measurements."
+      },
+      {
+        "role": "assistant",
+        "content": "Requirements do not by themselves establish feasibility. Measure representative requests, peak memory, and tail latency on the target device. Distinguish cached and uncached operation, include concurrency, and report the workload and sample count. A smaller data structure may save memory but increase lookup cost. Prefer a prototype and explicit failure thresholds over an unsupported guarantee."
+      }
+    ]
+  },
+  {
+    "id": "cal-04-math",
+    "category": "math",
+    "messages": [
+      {
+        "role": "user",
+        "content": "A workshop has 57 boxes with 20 sensors each. It removes 11 sensors. Explain the count."
+      },
+      {
+        "role": "assistant",
+        "content": "Initially there are 57 times 20, or 1140, sensors. Removing 11 gives 1129. A reverse check adds 11 back to obtain 1140. The final count is 1129 sensors."
+      }
+    ]
+  },
+  {
+    "id": "cal-04-code",
+    "category": "code",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Write a Python function returning the first 11 squares, with input validation and tests."
+      },
+      {
+        "role": "assistant",
+        "content": "def squares(n: int) -> list[int]:\n    if isinstance(n, bool) or not isinstance(n, int) or n < 0:\n        raise ValueError(\"n must be a nonnegative integer\")\n    return [i * i for i in range(n)]\n\nassert squares(0) == []\nassert squares(3) == [0, 1, 4]\nThe function takes O(n) time and output space; validation handles negative and noninteger input."
+      }
+    ]
+  },
+  {
+    "id": "cal-04-agent",
+    "category": "agent",
+    "messages": [
+      {
+        "role": "user",
+        "content": "An API allows 20 requests per minute. Explain a safe plan for fetching 57 pages without losing progress."
+      },
+      {
+        "role": "assistant",
+        "content": "First confirm pagination and rate-limit headers. Keep a durable cursor after each completed page. Respect Retry-After, apply exponential backoff with jitter to transient failures, and use bounded retries. Never retry a non-idempotent operation blindly. Record failures separately from successful pages. Validate the final item count and avoid logging credentials."
+      }
+    ]
+  },
+  {
+    "id": "cal-04-chat",
+    "category": "chat",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Return JSON with item=\"sensor\", quantity=57, unit_price=20, and the calculated total. Then explain the calculation."
+      },
+      {
+        "role": "assistant",
+        "content": "{\"item\": \"sensor\", \"quantity\": 57, \"unit_price\": 20, \"total\": 1140}\nThe total is quantity multiplied by unit price: 57 × 20 = 1140."
+      }
+    ]
+  },
+  {
+    "id": "cal-04-multilingual",
+    "category": "multilingual",
+    "messages": [
+      {
+        "role": "user",
+        "content": "用中文和西班牙语解释：57 个盒子，每盒 20 件，一共有多少件？"
+      },
+      {
+        "role": "assistant",
+        "content": "中文：共有 57 × 20 = 1140 件。乘法把相同数量的组相加。\nEspañol: Hay 57 cajas de 20 unidades cada una; por tanto, hay 1140 unidades. La multiplicación representa la suma de grupos iguales."
+      }
+    ]
+  },
+  {
+    "id": "cal-04-reasoning",
+    "category": "reasoning",
+    "messages": [
+      {
+        "role": "user",
+        "content": "A service must use less than 57 MB of memory and respond in 20 milliseconds. Explain the limits of choosing a design without measurements."
+      },
+      {
+        "role": "assistant",
+        "content": "Requirements do not by themselves establish feasibility. Measure representative requests, peak memory, and tail latency on the target device. Distinguish cached and uncached operation, include concurrency, and report the workload and sample count. A smaller data structure may save memory but increase lookup cost. Prefer a prototype and explicit failure thresholds over an unsupported guarantee."
+      }
+    ]
+  },
+  {
+    "id": "cal-05-math",
+    "category": "math",
+    "messages": [
+      {
+        "role": "user",
+        "content": "A workshop has 86 boxes with 5 sensors each. It removes 24 sensors. Explain the count."
+      },
+      {
+        "role": "assistant",
+        "content": "Initially there are 86 times 5, or 430, sensors. Removing 24 gives 406. A reverse check adds 24 back to obtain 430. The final count is 406 sensors."
+      }
+    ]
+  },
+  {
+    "id": "cal-05-code",
+    "category": "code",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Write a Python function returning the first 24 squares, with input validation and tests."
+      },
+      {
+        "role": "assistant",
+        "content": "def squares(n: int) -> list[int]:\n    if isinstance(n, bool) or not isinstance(n, int) or n < 0:\n        raise ValueError(\"n must be a nonnegative integer\")\n    return [i * i for i in range(n)]\n\nassert squares(0) == []\nassert squares(3) == [0, 1, 4]\nThe function takes O(n) time and output space; validation handles negative and noninteger input."
+      }
+    ]
+  },
+  {
+    "id": "cal-05-agent",
+    "category": "agent",
+    "messages": [
+      {
+        "role": "user",
+        "content": "An API allows 5 requests per minute. Explain a safe plan for fetching 86 pages without losing progress."
+      },
+      {
+        "role": "assistant",
+        "content": "First confirm pagination and rate-limit headers. Keep a durable cursor after each completed page. Respect Retry-After, apply exponential backoff with jitter to transient failures, and use bounded retries. Never retry a non-idempotent operation blindly. Record failures separately from successful pages. Validate the final item count and avoid logging credentials."
+      }
+    ]
+  },
+  {
+    "id": "cal-05-chat",
+    "category": "chat",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Return JSON with item=\"sensor\", quantity=86, unit_price=5, and the calculated total. Then explain the calculation."
+      },
+      {
+        "role": "assistant",
+        "content": "{\"item\": \"sensor\", \"quantity\": 86, \"unit_price\": 5, \"total\": 430}\nThe total is quantity multiplied by unit price: 86 × 5 = 430."
+      }
+    ]
+  },
+  {
+    "id": "cal-05-multilingual",
+    "category": "multilingual",
+    "messages": [
+      {
+        "role": "user",
+        "content": "用中文和西班牙语解释：86 个盒子，每盒 5 件，一共有多少件？"
+      },
+      {
+        "role": "assistant",
+        "content": "中文：共有 86 × 5 = 430 件。乘法把相同数量的组相加。\nEspañol: Hay 86 cajas de 5 unidades cada una; por tanto, hay 430 unidades. La multiplicación representa la suma de grupos iguales."
+      }
+    ]
+  },
+  {
+    "id": "cal-05-reasoning",
+    "category": "reasoning",
+    "messages": [
+      {
+        "role": "user",
+        "content": "A service must use less than 86 MB of memory and respond in 5 milliseconds. Explain the limits of choosing a design without measurements."
+      },
+      {
+        "role": "assistant",
+        "content": "Requirements do not by themselves establish feasibility. Measure representative requests, peak memory, and tail latency on the target device. Distinguish cached and uncached operation, include concurrency, and report the workload and sample count. A smaller data structure may save memory but increase lookup cost. Prefer a prototype and explicit failure thresholds over an unsupported guarantee."
+      }
+    ]
+  },
+  {
+    "id": "cal-06-math",
+    "category": "math",
+    "messages": [
+      {
+        "role": "user",
+        "content": "A workshop has 12 boxes with 7 sensors each. It removes 28 sensors. Explain the count."
+      },
+      {
+        "role": "assistant",
+        "content": "Initially there are 12 times 7, or 84, sensors. Removing 28 gives 56. A reverse check adds 28 back to obtain 84. The final count is 56 sensors."
+      }
+    ]
+  },
+  {
+    "id": "cal-06-code",
+    "category": "code",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Write a Python function returning the first 28 squares, with input validation and tests."
+      },
+      {
+        "role": "assistant",
+        "content": "def squares(n: int) -> list[int]:\n    if isinstance(n, bool) or not isinstance(n, int) or n < 0:\n        raise ValueError(\"n must be a nonnegative integer\")\n    return [i * i for i in range(n)]\n\nassert squares(0) == []\nassert squares(3) == [0, 1, 4]\nThe function takes O(n) time and output space; validation handles negative and noninteger input."
+      }
+    ]
+  },
+  {
+    "id": "cal-06-agent",
+    "category": "agent",
+    "messages": [
+      {
+        "role": "user",
+        "content": "An API allows 7 requests per minute. Explain a safe plan for fetching 12 pages without losing progress."
+      },
+      {
+        "role": "assistant",
+        "content": "First confirm pagination and rate-limit headers. Keep a durable cursor after each completed page. Respect Retry-After, apply exponential backoff with jitter to transient failures, and use bounded retries. Never retry a non-idempotent operation blindly. Record failures separately from successful pages. Validate the final item count and avoid logging credentials."
+      }
+    ]
+  },
+  {
+    "id": "cal-06-chat",
+    "category": "chat",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Return JSON with item=\"sensor\", quantity=12, unit_price=7, and the calculated total. Then explain the calculation."
+      },
+      {
+        "role": "assistant",
+        "content": "{\"item\": \"sensor\", \"quantity\": 12, \"unit_price\": 7, \"total\": 84}\nThe total is quantity multiplied by unit price: 12 × 7 = 84."
+      }
+    ]
+  },
+  {
+    "id": "cal-06-multilingual",
+    "category": "multilingual",
+    "messages": [
+      {
+        "role": "user",
+        "content": "用中文和西班牙语解释：12 个盒子，每盒 7 件，一共有多少件？"
+      },
+      {
+        "role": "assistant",
+        "content": "中文：共有 12 × 7 = 84 件。乘法把相同数量的组相加。\nEspañol: Hay 12 cajas de 7 unidades cada una; por tanto, hay 84 unidades. La multiplicación representa la suma de grupos iguales."
+      }
+    ]
+  },
+  {
+    "id": "cal-06-reasoning",
+    "category": "reasoning",
+    "messages": [
+      {
+        "role": "user",
+        "content": "A service must use less than 12 MB of memory and respond in 7 milliseconds. Explain the limits of choosing a design without measurements."
+      },
+      {
+        "role": "assistant",
+        "content": "Requirements do not by themselves establish feasibility. Measure representative requests, peak memory, and tail latency on the target device. Distinguish cached and uncached operation, include concurrency, and report the workload and sample count. A smaller data structure may save memory but increase lookup cost. Prefer a prototype and explicit failure thresholds over an unsupported guarantee."
+      }
+    ]
+  },
+  {
+    "id": "cal-07-math",
+    "category": "math",
+    "messages": [
+      {
+        "role": "user",
+        "content": "A workshop has 86 boxes with 6 sensors each. It removes 26 sensors. Explain the count."
+      },
+      {
+        "role": "assistant",
+        "content": "Initially there are 86 times 6, or 516, sensors. Removing 26 gives 490. A reverse check adds 26 back to obtain 516. The final count is 490 sensors."
+      }
+    ]
+  },
+  {
+    "id": "cal-07-code",
+    "category": "code",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Write a Python function returning the first 26 squares, with input validation and tests."
+      },
+      {
+        "role": "assistant",
+        "content": "def squares(n: int) -> list[int]:\n    if isinstance(n, bool) or not isinstance(n, int) or n < 0:\n        raise ValueError(\"n must be a nonnegative integer\")\n    return [i * i for i in range(n)]\n\nassert squares(0) == []\nassert squares(3) == [0, 1, 4]\nThe function takes O(n) time and output space; validation handles negative and noninteger input."
+      }
+    ]
+  },
+  {
+    "id": "cal-07-agent",
+    "category": "agent",
+    "messages": [
+      {
+        "role": "user",
+        "content": "An API allows 6 requests per minute. Explain a safe plan for fetching 86 pages without losing progress."
+      },
+      {
+        "role": "assistant",
+        "content": "First confirm pagination and rate-limit headers. Keep a durable cursor after each completed page. Respect Retry-After, apply exponential backoff with jitter to transient failures, and use bounded retries. Never retry a non-idempotent operation blindly. Record failures separately from successful pages. Validate the final item count and avoid logging credentials."
+      }
+    ]
+  },
+  {
+    "id": "cal-07-chat",
+    "category": "chat",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Return JSON with item=\"sensor\", quantity=86, unit_price=6, and the calculated total. Then explain the calculation."
+      },
+      {
+        "role": "assistant",
+        "content": "{\"item\": \"sensor\", \"quantity\": 86, \"unit_price\": 6, \"total\": 516}\nThe total is quantity multiplied by unit price: 86 × 6 = 516."
+      }
+    ]
+  },
+  {
+    "id": "cal-07-multilingual",
+    "category": "multilingual",
+    "messages": [
+      {
+        "role": "user",
+        "content": "用中文和西班牙语解释：86 个盒子，每盒 6 件，一共有多少件？"
+      },
+      {
+        "role": "assistant",
+        "content": "中文：共有 86 × 6 = 516 件。乘法把相同数量的组相加。\nEspañol: Hay 86 cajas de 6 unidades cada una; por tanto, hay 516 unidades. La multiplicación representa la suma de grupos iguales."
+      }
+    ]
+  },
+  {
+    "id": "cal-07-reasoning",
+    "category": "reasoning",
+    "messages": [
+      {
+        "role": "user",
+        "content": "A service must use less than 86 MB of memory and respond in 6 milliseconds. Explain the limits of choosing a design without measurements."
+      },
+      {
+        "role": "assistant",
+        "content": "Requirements do not by themselves establish feasibility. Measure representative requests, peak memory, and tail latency on the target device. Distinguish cached and uncached operation, include concurrency, and report the workload and sample count. A smaller data structure may save memory but increase lookup cost. Prefer a prototype and explicit failure thresholds over an unsupported guarantee."
+      }
+    ]
+  },
+  {
+    "id": "cal-08-math",
+    "category": "math",
+    "messages": [
+      {
+        "role": "user",
+        "content": "A workshop has 29 boxes with 16 sensors each. It removes 12 sensors. Explain the count."
+      },
+      {
+        "role": "assistant",
+        "content": "Initially there are 29 times 16, or 464, sensors. Removing 12 gives 452. A reverse check adds 12 back to obtain 464. The final count is 452 sensors."
+      }
+    ]
+  },
+  {
+    "id": "cal-08-code",
+    "category": "code",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Write a Python function returning the first 12 squares, with input validation and tests."
+      },
+      {
+        "role": "assistant",
+        "content": "def squares(n: int) -> list[int]:\n    if isinstance(n, bool) or not isinstance(n, int) or n < 0:\n        raise ValueError(\"n must be a nonnegative integer\")\n    return [i * i for i in range(n)]\n\nassert squares(0) == []\nassert squares(3) == [0, 1, 4]\nThe function takes O(n) time and output space; validation handles negative and noninteger input."
+      }
+    ]
+  },
+  {
+    "id": "cal-08-agent",
+    "category": "agent",
+    "messages": [
+      {
+        "role": "user",
+        "content": "An API allows 16 requests per minute. Explain a safe plan for fetching 29 pages without losing progress."
+      },
+      {
+        "role": "assistant",
+        "content": "First confirm pagination and rate-limit headers. Keep a durable cursor after each completed page. Respect Retry-After, apply exponential backoff with jitter to transient failures, and use bounded retries. Never retry a non-idempotent operation blindly. Record failures separately from successful pages. Validate the final item count and avoid logging credentials."
+      }
+    ]
+  },
+  {
+    "id": "cal-08-chat",
+    "category": "chat",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Return JSON with item=\"sensor\", quantity=29, unit_price=16, and the calculated total. Then explain the calculation."
+      },
+      {
+        "role": "assistant",
+        "content": "{\"item\": \"sensor\", \"quantity\": 29, \"unit_price\": 16, \"total\": 464}\nThe total is quantity multiplied by unit price: 29 × 16 = 464."
+      }
+    ]
+  },
+  {
+    "id": "cal-08-multilingual",
+    "category": "multilingual",
+    "messages": [
+      {
+        "role": "user",
+        "content": "用中文和西班牙语解释：29 个盒子，每盒 16 件，一共有多少件？"
+      },
+      {
+        "role": "assistant",
+        "content": "中文：共有 29 × 16 = 464 件。乘法把相同数量的组相加。\nEspañol: Hay 29 cajas de 16 unidades cada una; por tanto, hay 464 unidades. La multiplicación representa la suma de grupos iguales."
+      }
+    ]
+  },
+  {
+    "id": "cal-08-reasoning",
+    "category": "reasoning",
+    "messages": [
+      {
+        "role": "user",
+        "content": "A service must use less than 29 MB of memory and respond in 16 milliseconds. Explain the limits of choosing a design without measurements."
+      },
+      {
+        "role": "assistant",
+        "content": "Requirements do not by themselves establish feasibility. Measure representative requests, peak memory, and tail latency on the target device. Distinguish cached and uncached operation, include concurrency, and report the workload and sample count. A smaller data structure may save memory but increase lookup cost. Prefer a prototype and explicit failure thresholds over an unsupported guarantee."
+      }
+    ]
+  },
+  {
+    "id": "cal-09-math",
+    "category": "math",
+    "messages": [
+      {
+        "role": "user",
+        "content": "A workshop has 36 boxes with 6 sensors each. It removes 16 sensors. Explain the count."
+      },
+      {
+        "role": "assistant",
+        "content": "Initially there are 36 times 6, or 216, sensors. Removing 16 gives 200. A reverse check adds 16 back to obtain 216. The final count is 200 sensors."
+      }
+    ]
+  },
+  {
+    "id": "cal-09-code",
+    "category": "code",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Write a Python function returning the first 16 squares, with input validation and tests."
+      },
+      {
+        "role": "assistant",
+        "content": "def squares(n: int) -> list[int]:\n    if isinstance(n, bool) or not isinstance(n, int) or n < 0:\n        raise ValueError(\"n must be a nonnegative integer\")\n    return [i * i for i in range(n)]\n\nassert squares(0) == []\nassert squares(3) == [0, 1, 4]\nThe function takes O(n) time and output space; validation handles negative and noninteger input."
+      }
+    ]
+  },
+  {
+    "id": "cal-09-agent",
+    "category": "agent",
+    "messages": [
+      {
+        "role": "user",
+        "content": "An API allows 6 requests per minute. Explain a safe plan for fetching 36 pages without losing progress."
+      },
+      {
+        "role": "assistant",
+        "content": "First confirm pagination and rate-limit headers. Keep a durable cursor after each completed page. Respect Retry-After, apply exponential backoff with jitter to transient failures, and use bounded retries. Never retry a non-idempotent operation blindly. Record failures separately from successful pages. Validate the final item count and avoid logging credentials."
+      }
+    ]
+  },
+  {
+    "id": "cal-09-chat",
+    "category": "chat",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Return JSON with item=\"sensor\", quantity=36, unit_price=6, and the calculated total. Then explain the calculation."
+      },
+      {
+        "role": "assistant",
+        "content": "{\"item\": \"sensor\", \"quantity\": 36, \"unit_price\": 6, \"total\": 216}\nThe total is quantity multiplied by unit price: 36 × 6 = 216."
+      }
+    ]
+  },
+  {
+    "id": "cal-09-multilingual",
+    "category": "multilingual",
+    "messages": [
+      {
+        "role": "user",
+        "content": "用中文和西班牙语解释：36 个盒子，每盒 6 件，一共有多少件？"
+      },
+      {
+        "role": "assistant",
+        "content": "中文：共有 36 × 6 = 216 件。乘法把相同数量的组相加。\nEspañol: Hay 36 cajas de 6 unidades cada una; por tanto, hay 216 unidades. La multiplicación representa la suma de grupos iguales."
+      }
+    ]
+  },
+  {
+    "id": "cal-09-reasoning",
+    "category": "reasoning",
+    "messages": [
+      {
+        "role": "user",
+        "content": "A service must use less than 36 MB of memory and respond in 6 milliseconds. Explain the limits of choosing a design without measurements."
+      },
+      {
+        "role": "assistant",
+        "content": "Requirements do not by themselves establish feasibility. Measure representative requests, peak memory, and tail latency on the target device. Distinguish cached and uncached operation, include concurrency, and report the workload and sample count. A smaller data structure may save memory but increase lookup cost. Prefer a prototype and explicit failure thresholds over an unsupported guarantee."
+      }
+    ]
+  },
+  {
+    "id": "cal-10-math",
+    "category": "math",
+    "messages": [
+      {
+        "role": "user",
+        "content": "A workshop has 44 boxes with 17 sensors each. It removes 29 sensors. Explain the count."
+      },
+      {
+        "role": "assistant",
+        "content": "Initially there are 44 times 17, or 748, sensors. Removing 29 gives 719. A reverse check adds 29 back to obtain 748. The final count is 719 sensors."
+      }
+    ]
+  },
+  {
+    "id": "cal-10-code",
+    "category": "code",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Write a Python function returning the first 29 squares, with input validation and tests."
+      },
+      {
+        "role": "assistant",
+        "content": "def squares(n: int) -> list[int]:\n    if isinstance(n, bool) or not isinstance(n, int) or n < 0:\n        raise ValueError(\"n must be a nonnegative integer\")\n    return [i * i for i in range(n)]\n\nassert squares(0) == []\nassert squares(3) == [0, 1, 4]\nThe function takes O(n) time and output space; validation handles negative and noninteger input."
+      }
+    ]
+  },
+  {
+    "id": "cal-10-agent",
+    "category": "agent",
+    "messages": [
+      {
+        "role": "user",
+        "content": "An API allows 17 requests per minute. Explain a safe plan for fetching 44 pages without losing progress."
+      },
+      {
+        "role": "assistant",
+        "content": "First confirm pagination and rate-limit headers. Keep a durable cursor after each completed page. Respect Retry-After, apply exponential backoff with jitter to transient failures, and use bounded retries. Never retry a non-idempotent operation blindly. Record failures separately from successful pages. Validate the final item count and avoid logging credentials."
+      }
+    ]
+  },
+  {
+    "id": "cal-10-chat",
+    "category": "chat",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Return JSON with item=\"sensor\", quantity=44, unit_price=17, and the calculated total. Then explain the calculation."
+      },
+      {
+        "role": "assistant",
+        "content": "{\"item\": \"sensor\", \"quantity\": 44, \"unit_price\": 17, \"total\": 748}\nThe total is quantity multiplied by unit price: 44 × 17 = 748."
+      }
+    ]
+  },
+  {
+    "id": "cal-10-multilingual",
+    "category": "multilingual",
+    "messages": [
+      {
+        "role": "user",
+        "content": "用中文和西班牙语解释：44 个盒子，每盒 17 件，一共有多少件？"
+      },
+      {
+        "role": "assistant",
+        "content": "中文：共有 44 × 17 = 748 件。乘法把相同数量的组相加。\nEspañol: Hay 44 cajas de 17 unidades cada una; por tanto, hay 748 unidades. La multiplicación representa la suma de grupos iguales."
+      }
+    ]
+  },
+  {
+    "id": "cal-10-reasoning",
+    "category": "reasoning",
+    "messages": [
+      {
+        "role": "user",
+        "content": "A service must use less than 44 MB of memory and respond in 17 milliseconds. Explain the limits of choosing a design without measurements."
+      },
+      {
+        "role": "assistant",
+        "content": "Requirements do not by themselves establish feasibility. Measure representative requests, peak memory, and tail latency on the target device. Distinguish cached and uncached operation, include concurrency, and report the workload and sample count. A smaller data structure may save memory but increase lookup cost. Prefer a prototype and explicit failure thresholds over an unsupported guarantee."
+      }
+    ]
+  },
+  {
+    "id": "cal-11-math",
+    "category": "math",
+    "messages": [
+      {
+        "role": "user",
+        "content": "A workshop has 31 boxes with 10 sensors each. It removes 15 sensors. Explain the count."
+      },
+      {
+        "role": "assistant",
+        "content": "Initially there are 31 times 10, or 310, sensors. Removing 15 gives 295. A reverse check adds 15 back to obtain 310. The final count is 295 sensors."
+      }
+    ]
+  },
+  {
+    "id": "cal-11-code",
+    "category": "code",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Write a Python function returning the first 15 squares, with input validation and tests."
+      },
+      {
+        "role": "assistant",
+        "content": "def squares(n: int) -> list[int]:\n    if isinstance(n, bool) or not isinstance(n, int) or n < 0:\n        raise ValueError(\"n must be a nonnegative integer\")\n    return [i * i for i in range(n)]\n\nassert squares(0) == []\nassert squares(3) == [0, 1, 4]\nThe function takes O(n) time and output space; validation handles negative and noninteger input."
+      }
+    ]
+  },
+  {
+    "id": "cal-11-agent",
+    "category": "agent",
+    "messages": [
+      {
+        "role": "user",
+        "content": "An API allows 10 requests per minute. Explain a safe plan for fetching 31 pages without losing progress."
+      },
+      {
+        "role": "assistant",
+        "content": "First confirm pagination and rate-limit headers. Keep a durable cursor after each completed page. Respect Retry-After, apply exponential backoff with jitter to transient failures, and use bounded retries. Never retry a non-idempotent operation blindly. Record failures separately from successful pages. Validate the final item count and avoid logging credentials."
+      }
+    ]
+  },
+  {
+    "id": "cal-11-chat",
+    "category": "chat",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Return JSON with item=\"sensor\", quantity=31, unit_price=10, and the calculated total. Then explain the calculation."
+      },
+      {
+        "role": "assistant",
+        "content": "{\"item\": \"sensor\", \"quantity\": 31, \"unit_price\": 10, \"total\": 310}\nThe total is quantity multiplied by unit price: 31 × 10 = 310."
+      }
+    ]
+  },
+  {
+    "id": "cal-11-multilingual",
+    "category": "multilingual",
+    "messages": [
+      {
+        "role": "user",
+        "content": "用中文和西班牙语解释：31 个盒子，每盒 10 件，一共有多少件？"
+      },
+      {
+        "role": "assistant",
+        "content": "中文：共有 31 × 10 = 310 件。乘法把相同数量的组相加。\nEspañol: Hay 31 cajas de 10 unidades cada una; por tanto, hay 310 unidades. La multiplicación representa la suma de grupos iguales."
+      }
+    ]
+  },
+  {
+    "id": "cal-11-reasoning",
+    "category": "reasoning",
+    "messages": [
+      {
+        "role": "user",
+        "content": "A service must use less than 31 MB of memory and respond in 10 milliseconds. Explain the limits of choosing a design without measurements."
+      },
+      {
+        "role": "assistant",
+        "content": "Requirements do not by themselves establish feasibility. Measure representative requests, peak memory, and tail latency on the target device. Distinguish cached and uncached operation, include concurrency, and report the workload and sample count. A smaller data structure may save memory but increase lookup cost. Prefer a prototype and explicit failure thresholds over an unsupported guarantee."
+      }
+    ]
+  }
+]

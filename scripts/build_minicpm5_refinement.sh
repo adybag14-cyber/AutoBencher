@@ -5,6 +5,11 @@ set -euo pipefail
 CTX="${1:?Usage: build_minicpm5_refinement.sh 16384|32768|65536}"
 case "$CTX" in 16384) TAG=16k;; 32768) TAG=32k;; 65536) TAG=64k;; *) echo 'Unsupported context' >&2; exit 2;; esac
 ROOT=/home/tdamre/minicpm5-litert-20260910
+HOLD="$ROOT/dynv32/export_scheduler_gate.txt"
+if [[ "$CTX" != 16384 && -f "$HOLD" && "$(cat "$HOLD")" == hold ]]; then
+  echo "DYNV32_${TAG}_DEFERRED_AT_CONTEXT_BOUNDARY_FOR_BENCHMARKS" >&2
+  exit 75
+fi
 WORK=/mnt/c/Users/adyba/docker-chatgpt-devbox/workspace
 REPO="$WORK/AutoBencher"
 PY="$ROOT/.venv/bin/python"

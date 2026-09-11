@@ -62,3 +62,17 @@ The 64K artifact passing a short question does not validate 64K retrieval. Runti
 ## Safe publication
 
 Publish experimental artifacts separately from existing release paths. Hash the exact immutable copy served during evaluation, not a source output path another concurrent conversion might rebuild. Attach comparison JSON, per-context hashes and explicit limitations. Use a parent-commit guard for Hugging Face model-card edits and never log credentials or commit token files.
+
+
+<!-- REFINEMENT_TRANSPORT_AND_AUDIT -->
+## Resumable diagnostic transport and evidence checks
+
+`benchmark_minicpm5_refinement.py --resume` retains completed runs and repeats only unfinished checks. It serves the frozen experiment imports, verifies their pinned SHA-256 hashes and uses a 3,600-second evaluator request timeout for slow CPU inference. The generation budgets remain 512 tokens for IFEval and 2,048 for GPQA. Timeout changes are transport changes, not a model-quality improvement.
+
+`audit_minicpm5_comparison.py` compares exact prompt hashes, input token counts, frozen model identities and saved BF16 output hashes. It reports output-cap hits independently from adapter stop reasons and distinguishes extracted-choice correctness from the requested final-answer format.
+
+`publish_minicpm5_experimental.py` requires completed, audited inference before publishing a separate experimental directory. It refuses unaudited data, mixed model families, missing contexts and unsupported near-lossless claims. A wrong answer can be published transparently; a failed transport request cannot be silently scored as a wrong answer.
+
+The bounded localhost proxy explicitly rejects conflicting output-token allowances and unsupported streaming requests. `test_refinement_transport_policy.py` exercises this control-plane behavior with a mock backend; those tests do not establish quantizer simulator parity or model accuracy.
+
+The export scheduler can checkpoint after the 16K candidate by writing `hold` to `dynv32/export_scheduler_gate.txt`. Subsequent context invocations exit with status 75 before touching their output directories. Writing `continue` permits the remaining contexts to resume. This is a scheduling checkpoint, not a claim that deferred artifacts exist.

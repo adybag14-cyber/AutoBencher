@@ -1,0 +1,36 @@
+{
+  "created_at": "2026-09-11T15:14:18.866587+00:00",
+  "status": "passed",
+  "scope": "Control-plane tests for precision-floor policy, publication gates and a mock localhost HTTP proxy. Not quantizer parity, model inference, or full benchmark tests.",
+  "source_sha256": {
+    "scripts/minicpm5_calibrate_refinement.py": "937ccbcdb1733376de927dd7a35d9f2949c89d0f8f914a00077089497df84840",
+    "scripts/minicpm5_apply_precision_floor.py": "804fd3632cf63e4f22c5699624730e64cd364802f1577eb2ed83e84cd9592a71",
+    "scripts/build_minicpm5_refinement.sh": "bb33a756940a9ac3dd7d97c55064ce81472ca5b4ed08672b47170f7075f782f0",
+    "scripts/build_minicpm5_refinement_all.sh": "d10e2cb0f863a2773ba364d7a60fc0335a24cf9058258c687a813bd9247870e6",
+    "scripts/serve_minicpm5_dynv31.sh": "afe921943d9e467bb3e62b83077f29931b6029d43b7315d2c8981d36d5f461e9",
+    "scripts/serve_minicpm5_dynv31_frozen.sh": "2c9a58bbd002870b049ca503fc16c2cc0efe4cfc368442eba904d8e9e43c56d4",
+    "scripts/benchmark_minicpm5_refinement.py": "f2f450a41e612774d331ca5dc1bb06c849820ca51a261f97cd51b75795aaad2f",
+    "scripts/audit_minicpm5_comparison.py": "e9fd01104dbb1c43740d5974b8be1a48858c2c13df860ae286dd7e156c545e05",
+    "scripts/publish_minicpm5_experimental.py": "145ff9f4e86d4b633bc583e685913c1feb3a7533da5e5383f3c82ad1a969c08a",
+    "scripts/litert_refinement_proxy.py": "916b050f2ad99c5cbe485e85dfc9f03afc20f3e9e0abcb5d1367e1f1ff14c2b2",
+    "scripts/test_refinement_transport_policy.py": "aa75d342374a03259d4e48e62db8d4d80081ac059428fede9468c1189c610942",
+    "config/litert-dynv31-server.json": "09df6d19090fadc3b41a9a2dd35eadc62bd6869e39ffd1fade821ec00a84aa83",
+    "config/minicpm5-dynv31a-precision-floor.json": "1cef76737f81bd22247fcbee3552ca610d2c6e36d79e7c280b0fb9021f41693c"
+  },
+  "published_sha256": {
+    "scripts/minicpm5_calibrate_refinement.py": "937ccbcdb1733376de927dd7a35d9f2949c89d0f8f914a00077089497df84840",
+    "scripts/minicpm5_apply_precision_floor.py": "804fd3632cf63e4f22c5699624730e64cd364802f1577eb2ed83e84cd9592a71",
+    "scripts/build_minicpm5_refinement.sh": "bb33a756940a9ac3dd7d97c55064ce81472ca5b4ed08672b47170f7075f782f0",
+    "scripts/build_minicpm5_refinement_all.sh": "d10e2cb0f863a2773ba364d7a60fc0335a24cf9058258c687a813bd9247870e6",
+    "scripts/serve_minicpm5_dynv31.sh": "afe921943d9e467bb3e62b83077f29931b6029d43b7315d2c8981d36d5f461e9",
+    "scripts/serve_minicpm5_dynv31_frozen.sh": "2c9a58bbd002870b049ca503fc16c2cc0efe4cfc368442eba904d8e9e43c56d4",
+    "scripts/benchmark_minicpm5_refinement.py": "dba2e2c67bbb83801e99156d24fe94b8f4e9c8bf817c15fcc03c03b057bc4472",
+    "scripts/audit_minicpm5_comparison.py": "e9fd01104dbb1c43740d5974b8be1a48858c2c13df860ae286dd7e156c545e05",
+    "scripts/publish_minicpm5_experimental.py": "145ff9f4e86d4b633bc583e685913c1feb3a7533da5e5383f3c82ad1a969c08a",
+    "scripts/litert_refinement_proxy.py": "916b050f2ad99c5cbe485e85dfc9f03afc20f3e9e0abcb5d1367e1f1ff14c2b2",
+    "scripts/test_refinement_transport_policy.py": "aa75d342374a03259d4e48e62db8d4d80081ac059428fede9468c1189c610942",
+    "config/litert-dynv31-server.json": "09df6d19090fadc3b41a9a2dd35eadc62bd6869e39ffd1fade821ec00a84aa83",
+    "config/minicpm5-dynv31a-precision-floor.json": "1cef76737f81bd22247fcbee3552ca610d2c6e36d79e7c280b0fb9021f41693c"
+  },
+  "normalization": "CRLF-to-LF normalization only; original tested source byte hashes retained separately."
+}
