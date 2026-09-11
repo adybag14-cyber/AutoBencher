@@ -1,0 +1,25 @@
+{
+  "repo_id": "Tdamre/MiniCPM5-2B-LiteRT-LongContext",
+  "commit_oid": "e8eb0725d11d6c224415712ea385b18f543bb38c",
+  "commit_url": "https://huggingface.co/Tdamre/MiniCPM5-2B-LiteRT-LongContext/commit/e8eb0725d11d6c224415712ea385b18f543bb38c",
+  "parent_commit": "2bd2ff41bb36c19b7e6b4cac8542458ef7e8187f",
+  "prefix": "experimental/dynv31a-2026-09-11",
+  "artifacts": [
+    {
+      "file": "MiniCPM5-2B-LiteRT-DynV31A-16k.litertlm",
+      "sha256": "743f73e2917f90fa4229504363c6191ae25e8e6e1fff98380ac6c4991600c2a8",
+      "bytes": 2221705568
+    },
+    {
+      "file": "MiniCPM5-2B-LiteRT-DynV31A-32k.litertlm",
+      "sha256": "e0f52b6223f6e8dcc015471287732721b8c8471848204ba2f2741e2a2e611bff",
+      "bytes": 2221705568
+    },
+    {
+      "file": "MiniCPM5-2B-LiteRT-DynV31A-64k.litertlm",
+      "sha256": "b301387dcc67c78b26f100868e650e0bb18a8459926f67ed3cae69e6f4ef36ba",
+      "bytes": 2221705568
+    }
+  ],
+  "experimental": true
+}

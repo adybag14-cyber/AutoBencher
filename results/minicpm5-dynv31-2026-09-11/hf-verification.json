@@ -1,0 +1,24 @@
+{
+  "commit": "e8eb0725d11d6c224415712ea385b18f543bb38c",
+  "all_remote_artifacts_verified": true,
+  "artifacts": [
+    {
+      "path": "experimental/dynv31a-2026-09-11/MiniCPM5-2B-LiteRT-DynV31A-16k.litertlm",
+      "bytes": 2221705568,
+      "sha256": "743f73e2917f90fa4229504363c6191ae25e8e6e1fff98380ac6c4991600c2a8",
+      "verified": true
+    },
+    {
+      "path": "experimental/dynv31a-2026-09-11/MiniCPM5-2B-LiteRT-DynV31A-32k.litertlm",
+      "bytes": 2221705568,
+      "sha256": "e0f52b6223f6e8dcc015471287732721b8c8471848204ba2f2741e2a2e611bff",
+      "verified": true
+    },
+    {
+      "path": "experimental/dynv31a-2026-09-11/MiniCPM5-2B-LiteRT-DynV31A-64k.litertlm",
+      "bytes": 2221705568,
+      "sha256": "b301387dcc67c78b26f100868e650e0bb18a8459926f67ed3cae69e6f4ef36ba",
+      "verified": true
+    }
+  ]
+}
