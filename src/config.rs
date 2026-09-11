@@ -17,6 +17,8 @@ pub struct AppConfig {
     pub model_card_url: String,
     pub evalscope_spec: String,
     pub generation_config: String,
+    #[serde(default = "default_eval_batch_size")]
+    pub eval_batch_size: usize,
     pub vllm: VllmConfig,
 }
 
@@ -30,6 +32,10 @@ pub struct VllmConfig {
     pub max_model_len: usize,
     #[serde(default)]
     pub extra_args: Vec<String>,
+}
+
+fn default_eval_batch_size() -> usize {
+    8
 }
 
 impl AppConfig {

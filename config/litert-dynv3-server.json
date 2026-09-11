@@ -1,0 +1,16 @@
+{
+  "default": {
+    "backend": "cpu",
+    "cpu_thread_count": 32,
+    "cache": "disk",
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "seed": 42,
+    "thinking": false
+  },
+  "models": {
+    "minicpm5-dynv3-16k": { "max_num_tokens": 16384 },
+    "minicpm5-dynv3-32k": { "max_num_tokens": 32768 },
+    "minicpm5-dynv3-64k": { "max_num_tokens": 65536 }
+  }
+}

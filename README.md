@@ -157,6 +157,37 @@ autobencher run --engine external --api-base http://host:8000 --model served-mod
 
 If a key is required, set the environment variable named by `api_key_env` in `autobencher.toml` (default `AUTOBENCHER_API_KEY`). Secrets are passed to subprocesses and are not intentionally written into reports.
 
+### LiteRT-LM Dynamic-v3 example
+
+The repository includes a tested profile for the Dynamic-v3-inspired MiniCPM5 LiteRT artifacts published at `Tdamre/MiniCPM5-2B-LiteRT-LongContext`. Import the three artifacts into LiteRT-LM using the aliases expected by `config/litert-dynv3-server.json`:
+
+```bash
+litert-lm import /path/MiniCPM5-2B-LiteRT-DynV3Mixed-16k.litertlm minicpm5-dynv3-16k
+litert-lm import /path/MiniCPM5-2B-LiteRT-DynV3Mixed-32k.litertlm minicpm5-dynv3-32k
+litert-lm import /path/MiniCPM5-2B-LiteRT-DynV3Mixed-64k.litertlm minicpm5-dynv3-64k
+```
+
+Start LiteRT-LM and the small OpenAI-compatibility proxy in separate terminals:
+
+```bash
+litert-lm --config config/litert-dynv3-server.json serve --host 127.0.0.1 --port 9379
+python scripts/litert_openai_proxy.py --listen-port 9380 --backend http://127.0.0.1:9379
+```
+
+Then run a sampled comparison, for example:
+
+```bash
+autobencher --config autobencher-litert-dynv3.toml run \
+  --model minicpm5-dynv3-16k \
+  --engine external \
+  --api-base http://127.0.0.1:9380 \
+  --only ifeval,gpqa-diamond --limit 1 --no-setup --no-card-check
+```
+
+LiteRT-LM 0.17.0 reads the OpenAI field `max_completion_tokens`, while the EvalScope OpenAI client used by this project supplies the legacy `max_tokens` field. `scripts/litert_openai_proxy.py` mirrors that field so completion limits are actually enforced without changing benchmark prompts. The profile also sets `eval_batch_size = 1`, which is important for a single local LiteRT engine; the general AutoBencher default remains 8.
+
+The real-use 16K/32K/64K sampled results, artifact hashes, run IDs, output hashes, runtime measurements, and limitations are in [`results/minicpm5-dynv3-2026-09-11/REPORT.md`](results/minicpm5-dynv3-2026-09-11/REPORT.md). These sampled scores are integration checks, not full leaderboard reproductions.
+
 ## EvalScope isolation
 
 `autobencher setup` creates isolated environments below `.autobencher/envs/` for mutually incompatible evaluator families (core, sandboxed code, IFEval, IFBench, Multi-IF, BFCL, SWE-bench, and Terminal-Bench). This separation is required because some current optional evaluator dependencies conflict—for example BFCL and Terminal-Bench cannot be resolved safely into one Python environment. `uv` is preferred and shares its package cache across those environments; Python `venv` + pip is the fallback.

@@ -87,6 +87,8 @@ pub fn evalscope_compat(
         result_dir.display().to_string(),
         "--no-timestamp".into(),
         "--enable-progress-tracker".into(),
+        "--eval-batch-size".into(),
+        cfg.eval_batch_size.to_string(),
         "--generation-config".into(),
         cfg.generation_config.clone(),
     ];

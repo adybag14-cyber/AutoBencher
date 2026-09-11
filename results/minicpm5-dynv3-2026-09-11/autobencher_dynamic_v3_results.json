@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-11",
+  "target_repo": "Tdamre/MiniCPM5-2B-LiteRT-LongContext",
+  "target_repo_revision_before_publish": "6e597b1799c550ee2112ad847df86965a89da2d7",
+  "autobencher_base_commit": "14ae60899ddcf04d57b7c69a9b4a5612dc71d3ed",
+  "protocol": {
+    "purpose": "real-use sampled integration check; not a formal leaderboard evaluation",
+    "benchmarks": [
+      "ifeval",
+      "gpqa-diamond"
+    ],
+    "limit": 1,
+    "limit_semantics": "one sample per EvalScope subset",
+    "eval_batch_size": 1,
+    "seed": 42,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "client_max_tokens": 512,
+    "litert_translation": "local compatibility proxy mirrors max_tokens to max_completion_tokens",
+    "thinking": false,
+    "litert_backend": "cpu",
+    "cpu_thread_count": 32,
+    "evalscope_version": "1.11.1",
+    "litert_lm_version": "0.17.0"
+  },
+  "registry_dry_run": {
+    "registered_rows": 34,
+    "bundled_runnable_plans": 20,
+    "blocked_exact_reproduction_rows": 14,
+    "failed_or_timeouts": 0,
+    "runs": {
+      "16k": "040f10f8-130c-46e9-a0ad-758e282c4abc",
+      "32k": "b17f6e34-798f-4831-866b-5cc015b759da",
+      "64k": "2e64bee4-6893-4f08-bfea-02b97c77179f"
+    }
+  },
+  "variants": {
+    "16k": {
+      "artifact": "MiniCPM5-2B-LiteRT-DynV3Mixed-16k.litertlm",
+      "sha256": "deb0a0f15027542f98079f3d515d42254dc4dd7aeb3dc49cbb2bd733ada1c8be",
+      "context_tokens": 16384,
+      "run_id": "6d9c67f3-983c-4c17-97fe-4632cb6c9bd9",
+      "dry_run_id": "040f10f8-130c-46e9-a0ad-758e282c4abc",
+      "benchmarks": {
+        "ifeval": {
+          "primary_score_percent": 100.0,
+          "duration_seconds": 97.899,
+          "model_latency_seconds": 92.5,
+          "input_tokens": 90,
+          "output_tokens": 410,
+          "reasoning_tokens": 0,
+          "stop_reason": "stop",
+          "output_sha256": "d37834c4483ca6d5c736251a7163af8e1be8522c0fb33d23dcab56721d45c27c",
+          "status": "completed"
+        },
+        "gpqa-diamond": {
+          "primary_score_percent": 0.0,
+          "duration_seconds": 95.822,
+          "model_latency_seconds": 91.188,
+          "input_tokens": 156,
+          "output_tokens": 401,
+          "reasoning_tokens": 0,
+          "stop_reason": "stop",
+          "output_sha256": "97329a9a098dece14e6afd9ac6c9ea94861b5352eaa4afdf707ffd5dd904a038",
+          "status": "completed"
+        }
+      }
+    },
+    "32k": {
+      "artifact": "MiniCPM5-2B-LiteRT-DynV3Mixed-32k.litertlm",
+      "sha256": "67416815468538c24d92249f62a86feab0d1ace2086eda79fce12c2296264c82",
+      "context_tokens": 32768,
+      "run_id": "ee2b4179-a527-4d1e-924b-0fd5ea928c57",
+      "dry_run_id": "b17f6e34-798f-4831-866b-5cc015b759da",
+      "benchmarks": {
+        "ifeval": {
+          "primary_score_percent": 100.0,
+          "duration_seconds": 138.18,
+          "model_latency_seconds": 133.562,
+          "input_tokens": 90,
+          "output_tokens": 410,
+          "reasoning_tokens": 0,
+          "stop_reason": "stop",
+          "output_sha256": "d37834c4483ca6d5c736251a7163af8e1be8522c0fb33d23dcab56721d45c27c",
+          "status": "completed"
+        },
+        "gpqa-diamond": {
+          "primary_score_percent": 0.0,
+          "duration_seconds": 146.558,
+          "model_latency_seconds": 142.0,
+          "input_tokens": 156,
+          "output_tokens": 401,
+          "reasoning_tokens": 0,
+          "stop_reason": "stop",
+          "output_sha256": "97329a9a098dece14e6afd9ac6c9ea94861b5352eaa4afdf707ffd5dd904a038",
+          "status": "completed"
+        }
+      }
+    },
+    "64k": {
+      "artifact": "MiniCPM5-2B-LiteRT-DynV3Mixed-64k.litertlm",
+      "sha256": "f403c5cc32da5464b866595c4ddb71ffdffc3571c45bf2047c639737984f841e",
+      "context_tokens": 65536,
+      "run_id": "9eb75ebd-17bd-4e9f-bbb8-cb7101c3019b",
+      "dry_run_id": "2e64bee4-6893-4f08-bfea-02b97c77179f",
+      "benchmarks": {
+        "ifeval": {
+          "primary_score_percent": 100.0,
+          "duration_seconds": 236.478,
+          "model_latency_seconds": 231.86,
+          "input_tokens": 90,
+          "output_tokens": 410,
+          "reasoning_tokens": 0,
+          "stop_reason": "stop",
+          "output_sha256": "d37834c4483ca6d5c736251a7163af8e1be8522c0fb33d23dcab56721d45c27c",
+          "status": "completed"
+        },
+        "gpqa-diamond": {
+          "primary_score_percent": 0.0,
+          "duration_seconds": 220.464,
+          "model_latency_seconds": 215.89,
+          "input_tokens": 156,
+          "output_tokens": 401,
+          "reasoning_tokens": 0,
+          "stop_reason": "stop",
+          "output_sha256": "97329a9a098dece14e6afd9ac6c9ea94861b5352eaa4afdf707ffd5dd904a038",
+          "status": "completed"
+        }
+      }
+    }
+  },
+  "diagnostics": {
+    "legacy_max_tokens_gap": "LiteRT-LM 0.17 OpenAI handler reads max_completion_tokens; EvalScope legacy max_tokens was not honored directly. A local proxy translated the field for publishable runs.",
+    "direct_cap_validation": "A deliberately long request through the proxy with max_tokens=16 returned exactly 16 completion tokens.",
+    "math500_probe": "An earlier unproxied MATH-500 sample ran for over 10 minutes because the legacy token cap was ignored; it was cancelled and is excluded from scored results."
+  }
+}

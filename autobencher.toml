@@ -7,6 +7,7 @@ parallel = 1
 seed = 42
 model_card_url = "https://huggingface.co/openbmb/MiniCPM5-2B/raw/main/README.md"
 evalscope_spec = "evalscope>=1.11.0"
+eval_batch_size = 8
 generation_config = '{"max_tokens":32768,"temperature":1.0,"top_p":0.95,"extra_body":{"chat_template_kwargs":{"enable_thinking":true}}}'
 
 [vllm]
