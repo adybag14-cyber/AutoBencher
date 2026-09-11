@@ -1,0 +1,8 @@
+{
+  "status": "calibration_and_heldout_surrogate_completed",
+  "artifact_status": "export_in_progress",
+  "candidate_family": "DynV32O28",
+  "near_lossless_demonstrated": false,
+  "completed_published_family": "DynV31A",
+  "scope": "small held-out PyTorch surrogate, not LiteRT accuracy"
+}

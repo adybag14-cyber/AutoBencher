@@ -1,0 +1,15 @@
+{
+  "family": "DynV31A",
+  "scope": "Frozen precision floor, not proof of full-model accuracy",
+  "selection": {
+    "attention_int8_layers": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41],
+    "mlp_int8_layers": [7,22,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41],
+    "embedding_int8": true,
+    "lm_head_int8": true
+  },
+  "reference_artifact_sha256": {
+    "16k": "743f73e2917f90fa4229504363c6191ae25e8e6e1fff98380ac6c4991600c2a8",
+    "32k": "e0f52b6223f6e8dcc015471287732721b8c8471848204ba2f2741e2a2e611bff",
+    "64k": "b301387dcc67c78b26f100868e650e0bb18a8459926f67ed3cae69e6f4ef36ba"
+  }
+}

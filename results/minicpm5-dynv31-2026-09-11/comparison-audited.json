@@ -1,0 +1,450 @@
+{
+  "schema_version": 1,
+  "status": "completed",
+  "family": "DynV31A",
+  "scope": "two-item matched regression diagnostic",
+  "near_lossless_demonstrated": false,
+  "variants": {
+    "16k": {
+      "artifact": "MiniCPM5-2B-LiteRT-DynV31A-16k.litertlm",
+      "sha256": "743f73e2917f90fa4229504363c6191ae25e8e6e1fff98380ac6c4991600c2a8",
+      "bytes": 2221705568,
+      "benchmarks": {
+        "ifeval": {
+          "run_id": "89adde37-9395-4df4-8fc2-4a437cdf90b5",
+          "status": "completed",
+          "exit_code": 0,
+          "score_percent": 100.0,
+          "bf16_score_percent": 100.0,
+          "old_dynv3_score_percent": 100.0,
+          "delta_vs_bf16_pp": 0.0,
+          "delta_vs_old_dynv3_pp": 0.0,
+          "elapsed_seconds": 127.68445070000053,
+          "max_tokens": 512,
+          "metrics": {
+            "metrics.categories.score": 100.0,
+            "metrics.categories.subsets.score": 100.0,
+            "metrics.score": 100.0,
+            "perf_metrics.summary.latency.mean": 113.797,
+            "perf_metrics.summary.usage.input_tokens.mean": 90.0,
+            "perf_metrics.summary.usage.output_tokens.mean": 456.0,
+            "perf_metrics.summary.usage.total_tokens.mean": 546.0,
+            "primary_score": 100.0,
+            "sample_score.score.value.prompt_level_strict": 100.0
+          },
+          "error": null
+        },
+        "gpqa-diamond": {
+          "run_id": "0f409e81-d9ec-44ca-8032-6bd5d2a1e8d8",
+          "status": "completed",
+          "exit_code": 0,
+          "score_percent": 100.0,
+          "bf16_score_percent": 100.0,
+          "old_dynv3_score_percent": 0.0,
+          "delta_vs_bf16_pp": 0.0,
+          "delta_vs_old_dynv3_pp": 100.0,
+          "elapsed_seconds": 474.6480584000001,
+          "max_tokens": 2048,
+          "metrics": {
+            "metrics.categories.score": 100.0,
+            "metrics.categories.subsets.score": 100.0,
+            "metrics.score": 100.0,
+            "perf_metrics.summary.latency.mean": 466.0,
+            "perf_metrics.summary.usage.input_tokens.mean": 156.0,
+            "perf_metrics.summary.usage.output_tokens.mean": 2048.0,
+            "perf_metrics.summary.usage.total_tokens.mean": 2204.0,
+            "primary_score": 100.0,
+            "sample_score.score.value.accuracy": 100.0
+          },
+          "error": null
+        }
+      }
+    },
+    "32k": {
+      "artifact": "MiniCPM5-2B-LiteRT-DynV31A-32k.litertlm",
+      "sha256": "e0f52b6223f6e8dcc015471287732721b8c8471848204ba2f2741e2a2e611bff",
+      "bytes": 2221705568,
+      "benchmarks": {
+        "ifeval": {
+          "run_id": "7cd895fd-1c86-40e2-a7b3-cbe7c4450ce3",
+          "status": "completed",
+          "exit_code": 0,
+          "score_percent": 100.0,
+          "bf16_score_percent": 100.0,
+          "old_dynv3_score_percent": 100.0,
+          "delta_vs_bf16_pp": 0.0,
+          "delta_vs_old_dynv3_pp": 0.0,
+          "elapsed_seconds": 215.9252004000009,
+          "max_tokens": 512,
+          "metrics": {
+            "metrics.categories.score": 100.0,
+            "metrics.categories.subsets.score": 100.0,
+            "metrics.score": 100.0,
+            "perf_metrics.summary.latency.mean": 204.422,
+            "perf_metrics.summary.usage.input_tokens.mean": 90.0,
+            "perf_metrics.summary.usage.output_tokens.mean": 456.0,
+            "perf_metrics.summary.usage.total_tokens.mean": 546.0,
+            "primary_score": 100.0,
+            "sample_score.score.value.prompt_level_strict": 100.0
+          },
+          "error": null
+        },
+        "gpqa-diamond": {
+          "run_id": "e27f780b-9d65-48c8-bebf-10756aaf1453",
+          "status": "completed",
+          "exit_code": 0,
+          "score_percent": 100.0,
+          "bf16_score_percent": 100.0,
+          "old_dynv3_score_percent": 0.0,
+          "delta_vs_bf16_pp": 0.0,
+          "delta_vs_old_dynv3_pp": 100.0,
+          "elapsed_seconds": 807.3478845999998,
+          "max_tokens": 2048,
+          "metrics": {
+            "metrics.categories.score": 100.0,
+            "metrics.categories.subsets.score": 100.0,
+            "metrics.score": 100.0,
+            "perf_metrics.summary.latency.mean": 796.406,
+            "perf_metrics.summary.usage.input_tokens.mean": 156.0,
+            "perf_metrics.summary.usage.output_tokens.mean": 2048.0,
+            "perf_metrics.summary.usage.total_tokens.mean": 2204.0,
+            "primary_score": 100.0,
+            "sample_score.score.value.accuracy": 100.0
+          },
+          "error": null
+        }
+      }
+    },
+    "64k": {
+      "artifact": "MiniCPM5-2B-LiteRT-DynV31A-64k.litertlm",
+      "sha256": "b301387dcc67c78b26f100868e650e0bb18a8459926f67ed3cae69e6f4ef36ba",
+      "bytes": 2221705568,
+      "benchmarks": {
+        "ifeval": {
+          "run_id": "f4e96173-b872-4a12-90ed-d97aa5aeac25",
+          "status": "completed",
+          "exit_code": 0,
+          "score_percent": 100.0,
+          "bf16_score_percent": 100.0,
+          "old_dynv3_score_percent": 100.0,
+          "delta_vs_bf16_pp": 0.0,
+          "delta_vs_old_dynv3_pp": 0.0,
+          "elapsed_seconds": 319.5819088999997,
+          "max_tokens": 512,
+          "metrics": {
+            "metrics.categories.score": 100.0,
+            "metrics.categories.subsets.score": 100.0,
+            "metrics.score": 100.0,
+            "perf_metrics.summary.latency.mean": 305.156,
+            "perf_metrics.summary.usage.input_tokens.mean": 90.0,
+            "perf_metrics.summary.usage.output_tokens.mean": 456.0,
+            "perf_metrics.summary.usage.total_tokens.mean": 546.0,
+            "primary_score": 100.0,
+            "sample_score.score.value.prompt_level_strict": 100.0
+          },
+          "error": null
+        },
+        "gpqa-diamond": {
+          "run_id": "76efde5c-a5c5-4739-868d-b33907a4680d",
+          "status": "completed",
+          "exit_code": 0,
+          "score_percent": 100.0,
+          "bf16_score_percent": 100.0,
+          "old_dynv3_score_percent": 0.0,
+          "delta_vs_bf16_pp": 0.0,
+          "delta_vs_old_dynv3_pp": 100.0,
+          "elapsed_seconds": 1014.5620547000017,
+          "max_tokens": 2048,
+          "metrics": {
+            "metrics.categories.score": 100.0,
+            "metrics.categories.subsets.score": 100.0,
+            "metrics.score": 100.0,
+            "perf_metrics.summary.latency.mean": 1007.266,
+            "perf_metrics.summary.usage.input_tokens.mean": 156.0,
+            "perf_metrics.summary.usage.output_tokens.mean": 2048.0,
+            "perf_metrics.summary.usage.total_tokens.mean": 2204.0,
+            "primary_score": 100.0,
+            "sample_score.score.value.accuracy": 100.0
+          },
+          "error": null
+        }
+      }
+    }
+  },
+  "bf16_baseline": {
+    "model": "openbmb/MiniCPM5-2B local BF16 checkpoint",
+    "backend": "vLLM 0.29.0 on RTX 4090",
+    "thinking": false,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "eval_batch_size": 1,
+    "evalscope_version": "1.11.1",
+    "benchmarks": {
+      "ifeval": {
+        "run_id": "a565b4b3-bacc-4000-9b9d-c454f24a7ccf",
+        "primary_score_percent": 100.0,
+        "duration_seconds": 8.121,
+        "model_latency_seconds": 3.313,
+        "input_tokens": 90,
+        "output_tokens": 373,
+        "reasoning_tokens": null,
+        "stop_reason": "stop",
+        "output_sha256": "c637072bdd6065c4424ac2fc1a1af7474e48bdd4cdb9a327a3324dea1e051d8c",
+        "status": "completed",
+        "max_tokens": 512
+      },
+      "gpqa-diamond": {
+        "run_id": "df9a43a7-2c0b-4252-85a6-8eb647aaf6e4",
+        "primary_score_percent": 100.0,
+        "duration_seconds": 18.246,
+        "model_latency_seconds": 13.687,
+        "input_tokens": 156,
+        "output_tokens": 1447,
+        "reasoning_tokens": null,
+        "stop_reason": "stop",
+        "output_sha256": "7ae7fdea3a6a7dd8ceea6e9678e1aec68d85aa65169109e1b0cc7633f7f0fe2c",
+        "status": "completed",
+        "max_tokens": 2048
+      }
+    }
+  },
+  "protocol": {
+    "seed": 42,
+    "temperature": 0,
+    "top_p": 1,
+    "thinking": false,
+    "batch_size": 1,
+    "limit": 1,
+    "token_caps": {
+      "ifeval": 512,
+      "gpqa-diamond": 2048
+    },
+    "backend": "LiteRT-LM CPU",
+    "cpu_threads": 32,
+    "request_timeout_seconds": 3600,
+    "transport_note": "Resumed unfinished checks after the default client timeout aborted a slow CPU response. Existing completed scores are retained; prompts and output allowances are unchanged."
+  },
+  "limitations": [
+    "Not full benchmark scores; one item per selected benchmark.",
+    "BF16 controls are retained earlier runs with identical evaluator/item/settings.",
+    "BF16 GPU latency and LiteRT CPU latency are not comparable.",
+    "End-to-end differences can include conversion, tokenizer and runtime effects as well as weight quantization."
+  ],
+  "audit": {
+    "evidence_integrity_passed": true,
+    "all_runs_completed": true,
+    "errors": [],
+    "incomplete_runs": [],
+    "variants": {
+      "16k": {
+        "served_artifact_sha256": "743f73e2917f90fa4229504363c6191ae25e8e6e1fff98380ac6c4991600c2a8",
+        "artifact_matches_manifest": true,
+        "benchmarks": {
+          "ifeval": {
+            "prompt_sha256": "a0786f0699be43fa7613f9f61de02a1a17802886571c950879441ea4e9c585d3",
+            "output_sha256": "173de5e99fdff05991cb1d078760393720b831c0a5ac2c0e8b77bc77e6f38b76",
+            "output_tokens": 456,
+            "input_tokens": 90,
+            "reported_stop_reason": "stop",
+            "explicit_answer_line": null,
+            "backend_error": null,
+            "run_model": "minicpm5-dynv31a-16k",
+            "selected_benchmarks": [
+              "ifeval"
+            ],
+            "same_prompt_as_bf16": true,
+            "same_input_token_count_as_bf16": true,
+            "same_output_as_bf16": false,
+            "at_output_cap": false,
+            "bf16": {
+              "prompt_sha256": "a0786f0699be43fa7613f9f61de02a1a17802886571c950879441ea4e9c585d3",
+              "output_sha256": "c637072bdd6065c4424ac2fc1a1af7474e48bdd4cdb9a327a3324dea1e051d8c",
+              "output_tokens": 373,
+              "input_tokens": 90,
+              "reported_stop_reason": "stop",
+              "explicit_answer_line": null,
+              "backend_error": null,
+              "run_model": "/home/tdamre/minicpm5-litert-20260910/model/MiniCPM5-2B",
+              "selected_benchmarks": [
+                "ifeval",
+                "gpqa-diamond"
+              ]
+            },
+            "score_valid": true
+          },
+          "gpqa-diamond": {
+            "prompt_sha256": "cb2ab357d9595195c12b517a927c1de79b247571c217fd62815bfef7b7d49312",
+            "output_sha256": "c61bde2b5ae685354363cfe174f915ea8599df9f7d4bf8509490c378c5427759",
+            "output_tokens": 2048,
+            "input_tokens": 156,
+            "reported_stop_reason": "stop",
+            "explicit_answer_line": false,
+            "backend_error": null,
+            "run_model": "minicpm5-dynv31a-16k",
+            "selected_benchmarks": [
+              "gpqa-diamond"
+            ],
+            "same_prompt_as_bf16": true,
+            "same_input_token_count_as_bf16": true,
+            "same_output_as_bf16": false,
+            "at_output_cap": true,
+            "bf16": {
+              "prompt_sha256": "cb2ab357d9595195c12b517a927c1de79b247571c217fd62815bfef7b7d49312",
+              "output_sha256": "7ae7fdea3a6a7dd8ceea6e9678e1aec68d85aa65169109e1b0cc7633f7f0fe2c",
+              "output_tokens": 1447,
+              "input_tokens": 156,
+              "reported_stop_reason": "stop",
+              "explicit_answer_line": true,
+              "backend_error": null,
+              "run_model": "/home/tdamre/minicpm5-litert-20260910/model/MiniCPM5-2B",
+              "selected_benchmarks": [
+                "gpqa-diamond"
+              ]
+            },
+            "score_valid": true
+          }
+        }
+      },
+      "32k": {
+        "served_artifact_sha256": "e0f52b6223f6e8dcc015471287732721b8c8471848204ba2f2741e2a2e611bff",
+        "artifact_matches_manifest": true,
+        "benchmarks": {
+          "ifeval": {
+            "prompt_sha256": "a0786f0699be43fa7613f9f61de02a1a17802886571c950879441ea4e9c585d3",
+            "output_sha256": "173de5e99fdff05991cb1d078760393720b831c0a5ac2c0e8b77bc77e6f38b76",
+            "output_tokens": 456,
+            "input_tokens": 90,
+            "reported_stop_reason": "stop",
+            "explicit_answer_line": null,
+            "backend_error": null,
+            "run_model": "minicpm5-dynv31a-32k",
+            "selected_benchmarks": [
+              "ifeval"
+            ],
+            "same_prompt_as_bf16": true,
+            "same_input_token_count_as_bf16": true,
+            "same_output_as_bf16": false,
+            "at_output_cap": false,
+            "bf16": {
+              "prompt_sha256": "a0786f0699be43fa7613f9f61de02a1a17802886571c950879441ea4e9c585d3",
+              "output_sha256": "c637072bdd6065c4424ac2fc1a1af7474e48bdd4cdb9a327a3324dea1e051d8c",
+              "output_tokens": 373,
+              "input_tokens": 90,
+              "reported_stop_reason": "stop",
+              "explicit_answer_line": null,
+              "backend_error": null,
+              "run_model": "/home/tdamre/minicpm5-litert-20260910/model/MiniCPM5-2B",
+              "selected_benchmarks": [
+                "ifeval",
+                "gpqa-diamond"
+              ]
+            },
+            "score_valid": true
+          },
+          "gpqa-diamond": {
+            "prompt_sha256": "cb2ab357d9595195c12b517a927c1de79b247571c217fd62815bfef7b7d49312",
+            "output_sha256": "c61bde2b5ae685354363cfe174f915ea8599df9f7d4bf8509490c378c5427759",
+            "output_tokens": 2048,
+            "input_tokens": 156,
+            "reported_stop_reason": "stop",
+            "explicit_answer_line": false,
+            "backend_error": null,
+            "run_model": "minicpm5-dynv31a-32k",
+            "selected_benchmarks": [
+              "gpqa-diamond"
+            ],
+            "same_prompt_as_bf16": true,
+            "same_input_token_count_as_bf16": true,
+            "same_output_as_bf16": false,
+            "at_output_cap": true,
+            "bf16": {
+              "prompt_sha256": "cb2ab357d9595195c12b517a927c1de79b247571c217fd62815bfef7b7d49312",
+              "output_sha256": "7ae7fdea3a6a7dd8ceea6e9678e1aec68d85aa65169109e1b0cc7633f7f0fe2c",
+              "output_tokens": 1447,
+              "input_tokens": 156,
+              "reported_stop_reason": "stop",
+              "explicit_answer_line": true,
+              "backend_error": null,
+              "run_model": "/home/tdamre/minicpm5-litert-20260910/model/MiniCPM5-2B",
+              "selected_benchmarks": [
+                "gpqa-diamond"
+              ]
+            },
+            "score_valid": true
+          }
+        }
+      },
+      "64k": {
+        "served_artifact_sha256": "b301387dcc67c78b26f100868e650e0bb18a8459926f67ed3cae69e6f4ef36ba",
+        "artifact_matches_manifest": true,
+        "benchmarks": {
+          "ifeval": {
+            "prompt_sha256": "a0786f0699be43fa7613f9f61de02a1a17802886571c950879441ea4e9c585d3",
+            "output_sha256": "173de5e99fdff05991cb1d078760393720b831c0a5ac2c0e8b77bc77e6f38b76",
+            "output_tokens": 456,
+            "input_tokens": 90,
+            "reported_stop_reason": "stop",
+            "explicit_answer_line": null,
+            "backend_error": null,
+            "run_model": "minicpm5-dynv31a-64k",
+            "selected_benchmarks": [
+              "ifeval"
+            ],
+            "same_prompt_as_bf16": true,
+            "same_input_token_count_as_bf16": true,
+            "same_output_as_bf16": false,
+            "at_output_cap": false,
+            "bf16": {
+              "prompt_sha256": "a0786f0699be43fa7613f9f61de02a1a17802886571c950879441ea4e9c585d3",
+              "output_sha256": "c637072bdd6065c4424ac2fc1a1af7474e48bdd4cdb9a327a3324dea1e051d8c",
+              "output_tokens": 373,
+              "input_tokens": 90,
+              "reported_stop_reason": "stop",
+              "explicit_answer_line": null,
+              "backend_error": null,
+              "run_model": "/home/tdamre/minicpm5-litert-20260910/model/MiniCPM5-2B",
+              "selected_benchmarks": [
+                "ifeval",
+                "gpqa-diamond"
+              ]
+            },
+            "score_valid": true
+          },
+          "gpqa-diamond": {
+            "prompt_sha256": "cb2ab357d9595195c12b517a927c1de79b247571c217fd62815bfef7b7d49312",
+            "output_sha256": "c61bde2b5ae685354363cfe174f915ea8599df9f7d4bf8509490c378c5427759",
+            "output_tokens": 2048,
+            "input_tokens": 156,
+            "reported_stop_reason": "stop",
+            "explicit_answer_line": false,
+            "backend_error": null,
+            "run_model": "minicpm5-dynv31a-64k",
+            "selected_benchmarks": [
+              "gpqa-diamond"
+            ],
+            "same_prompt_as_bf16": true,
+            "same_input_token_count_as_bf16": true,
+            "same_output_as_bf16": false,
+            "at_output_cap": true,
+            "bf16": {
+              "prompt_sha256": "cb2ab357d9595195c12b517a927c1de79b247571c217fd62815bfef7b7d49312",
+              "output_sha256": "7ae7fdea3a6a7dd8ceea6e9678e1aec68d85aa65169109e1b0cc7633f7f0fe2c",
+              "output_tokens": 1447,
+              "input_tokens": 156,
+              "reported_stop_reason": "stop",
+              "explicit_answer_line": true,
+              "backend_error": null,
+              "run_model": "/home/tdamre/minicpm5-litert-20260910/model/MiniCPM5-2B",
+              "selected_benchmarks": [
+                "gpqa-diamond"
+              ]
+            },
+            "score_valid": true
+          }
+        }
+      }
+    },
+    "cap_note": "An output count equal to its cap is reported separately from the adapter stop reason. It is not assumed to be a natural full completion.",
+    "scope_note": "Matched prompts, artifact identities and one-item scores do not establish full-benchmark retention or near-lossless quantization."
+  }
+}
