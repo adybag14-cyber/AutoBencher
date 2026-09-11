@@ -1,4 +1,4 @@
-# DynV31A experimental artifacts — 11 September 2026
+# DynV31A experimental artifacts â€” 11 September 2026
 
 **Experimental; not a replacement for existing root artifacts. Near-lossless quality has not been established.**
 
@@ -6,7 +6,7 @@ Dynamic-v3-inspired LiteRT adaptation, not an official Unsloth quantization or G
 
 This is a two-item development regression diagnostic, not full IFEval or GPQA leaderboard accuracy. Each percentage describes one selected item. The BF16 controls are earlier matched AutoBencher runs, with exact prompt and output-receipt identity checked by the accompanying audit.
 
-| Context | IFEval candidate / BF16 | GPQA candidate / BF16 | GPQA tokens |
+| Context | IFEval candidate / BF16 | GPQA candidate / BF16 | GPQA candidate tokens / allowance |
 |---|---:|---:|---:|
 | 16k | 100% / 100% | 100% / 100% | 2048 / 2048 |
 | 32k | 100% / 100% | 100% / 100% | 2048 / 2048 |

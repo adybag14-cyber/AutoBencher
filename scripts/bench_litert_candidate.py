@@ -59,6 +59,8 @@ def main():
         'models':{args.label:{'max_num_tokens':args.context}}},indent=2))
     config=run/'autobencher.toml'
     base=(repo/'autobencher-litert-dynv3.toml').read_text()
+    workspace_win=subprocess.check_output(['wslpath','-w',str(repo/'.autobencher')],text=True).strip()
+    base=re.sub(r'^workspace = .*$',lambda _: 'workspace = '+json.dumps(workspace_win),base,flags=re.M)
     base=re.sub(r'^model = .*$',f'model = "{args.label}"',base,flags=re.M)
     base=re.sub(r'^api_base = .*$',f'api_base = "http://127.0.0.1:{args.port+1}"',base,flags=re.M)
     base=re.sub(r'^generation_config = .*$',"generation_config = '"+json.dumps(
