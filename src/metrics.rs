@@ -34,6 +34,7 @@ pub fn extract(
     for ent in WalkDir::new(result_dir)
         .max_depth(5)
         .into_iter()
+        .filter_entry(|entry| !(entry.file_type().is_dir() && entry.file_name() == "attempts"))
         .filter_map(Result::ok)
     {
         if !ent.file_type().is_file() {
@@ -55,6 +56,14 @@ pub fn extract(
         };
         if ext == "json" {
             if let Ok(v) = serde_json::from_str::<Value>(&raw) {
+                // A resumed run can still have our previous result.json here.
+                // It is orchestration metadata, not fresh evaluator evidence.
+                if v.get("run_id").is_some()
+                    && v.get("benchmark_id").is_some()
+                    && v.get("result_dir").is_some()
+                {
+                    continue;
+                }
                 let source = path.display().to_string();
                 extract_known_report_shapes(&v, &source, &mut candidates);
                 extract_json(&v, "", &source, &mut candidates);
@@ -219,5 +228,16 @@ mod tests {
         extract_known_report_shapes(&v, "test", &mut out);
         assert_eq!(out[0].key, "primary_score");
         assert!((out[0].value - 0.5714).abs() < 1e-9);
+    }
+
+    #[test]
+    fn previous_autobencher_results_do_not_contaminate_resumed_scores() {
+        let dir = tempfile::tempdir().unwrap();
+        std::fs::write(dir.path().join("result.json"), r#"{"run_id":"old","benchmark_id":"gpqa-diamond","result_dir":"old","primary_score":100}"#).unwrap();
+        let report = dir.path().join("reports");
+        std::fs::create_dir(&report).unwrap();
+        std::fs::write(report.join("gpqa.json"), r#"{"primary_metric_identity":{"name":"accuracy"},"metrics":[{"identity":{"name":"accuracy"},"score":0.5}]}"#).unwrap();
+        let (metrics, _) = extract("", "", dir.path());
+        assert_eq!(choose_primary(&metrics), Some(0.5));
     }
 }

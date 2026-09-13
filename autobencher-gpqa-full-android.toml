@@ -1,0 +1,21 @@
+model = "minicpm5-2b-mobile-int8-android-gpu"
+engine = "external"
+api_base = "http://127.0.0.1:9396"
+api_key_env = "AUTOBENCHER_API_KEY"
+workspace = ".autobencher"
+parallel = 1
+seed = 42
+model_card_url = "https://huggingface.co/openbmb/MiniCPM5-2B/raw/main/README.md"
+evalscope_spec = "evalscope==1.11.1"
+eval_batch_size = 1
+benchmark_timeout_minutes = 480
+generation_config = '{"max_tokens":2048,"temperature":0.0,"top_p":1.0,"extra_body":{"chat_template_kwargs":{"enable_thinking":false}}}'
+
+[vllm]
+executable = "vllm"
+port = 9396
+host = "127.0.0.1"
+tensor_parallel_size = 1
+gpu_memory_utilization = 0.2
+max_model_len = 16384
+extra_args = []

@@ -1,6 +1,7 @@
 mod bootstrap;
 mod card;
 mod config;
+mod coverage;
 mod doctor;
 mod engine;
 mod metrics;
@@ -8,6 +9,7 @@ mod native;
 mod process;
 mod registry;
 mod report;
+mod resume;
 mod runner;
 mod store;
 mod types;
@@ -163,6 +165,54 @@ async fn run(mut cfg: AppConfig, registry: types::SuiteRegistry, args: RunArgs) 
         .unwrap_or_else(|| Uuid::new_v4().to_string());
     let run_dir = cfg.workspace.join("runs").join(&run_id);
     fs::create_dir_all(&run_dir)?;
+    fs::create_dir_all(run_dir.join("provenance"))?;
+
+    let store = Store::open(&cfg.workspace)?;
+    let previous = if args.resume.is_some() {
+        store.load_results(&run_id)?
+    } else {
+        vec![]
+    };
+    if args.resume.is_some() {
+        let path = run_dir.join("provenance/config.json");
+        let old_cfg: AppConfig = serde_json::from_slice(&fs::read(&path)
+            .context("resume requires saved configuration provenance; use a new run for an older run without it")?)?;
+        resume::validate(&old_cfg, &cfg, &previous, args.limit)?;
+        let registry_path = run_dir.join("provenance/benchmarks.json");
+        if registry_path.is_file() {
+            let old_specs: serde_json::Value = serde_json::from_slice(&fs::read(&registry_path)?)?;
+            if old_specs != serde_json::to_value(&selected)? {
+                bail!("resume requires the same selected benchmark definitions");
+            }
+        }
+        let limit_path = run_dir.join("provenance/sample-limit.json");
+        if limit_path.is_file() {
+            let old_limit: Option<usize> = serde_json::from_slice(&fs::read(&limit_path)?)?;
+            if old_limit != args.limit {
+                bail!("resume requires the same sample limit");
+            }
+        }
+        fs::copy(
+            &path,
+            run_dir.join("provenance").join(format!(
+                "config-before-resume-{}.json",
+                Utc::now().format("%Y%m%dT%H%M%S%f")
+            )),
+        )?;
+    }
+    // AppConfig records the key's environment-variable name, never its value.
+    fs::write(
+        run_dir.join("provenance/config.json"),
+        serde_json::to_vec_pretty(&cfg)?,
+    )?;
+    fs::write(
+        run_dir.join("provenance/benchmarks.json"),
+        serde_json::to_vec_pretty(&selected)?,
+    )?;
+    fs::write(
+        run_dir.join("provenance/sample-limit.json"),
+        serde_json::to_vec_pretty(&args.limit)?,
+    )?;
 
     if !args.no_card_check {
         match card::verify(&cfg.model_card_url, &registry, &run_dir.join("provenance")).await {
@@ -186,12 +236,21 @@ async fn run(mut cfg: AppConfig, registry: types::SuiteRegistry, args: RunArgs) 
         bootstrap::ensure_evalscope_set(&cfg, &selected, false)?;
     }
 
-    let store = Store::open(&cfg.workspace)?;
-    let previous = if args.resume.is_some() {
-        store.load_results(&run_id)?
-    } else {
-        vec![]
-    };
+    if args.resume.is_some() {
+        let old: RunManifest = serde_json::from_slice(&fs::read(run_dir.join("manifest.json"))?)?;
+        if old.model != cfg.model || old.seed != cfg.seed || old.api_base != cfg.api_base {
+            bail!(
+                "resume requires the same model, seed and endpoint; use a new run for a changed setup"
+            );
+        }
+        fs::write(
+            run_dir.join("provenance").join(format!(
+                "manifest-before-resume-{}.json",
+                Utc::now().format("%Y%m%dT%H%M%S")
+            )),
+            serde_json::to_vec_pretty(&old)?,
+        )?;
+    }
     let terminal: HashSet<_> = previous
         .iter()
         .filter(|r| {
@@ -242,6 +301,7 @@ async fn run(mut cfg: AppConfig, registry: types::SuiteRegistry, args: RunArgs) 
         limit: args.limit,
         run_dir: run_dir.clone(),
         dry_run: args.dry_run,
+        reuse_predictions: args.resume.is_some(),
     };
     let _new = runner::run_all(ctx, pending, cfg.parallel).await?;
     if let Some(g) = &mut engine {

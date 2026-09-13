@@ -30,6 +30,42 @@ cargo run --release -- run --limit 5 \
   --only mmlu-pro,math-500,ifeval,livecodebench-v6
 ```
 
+GPQA Diamond contains **198 questions**. Run its complete split without a sample
+limit:
+
+```bash
+cargo run --release -- --config autobencher-gpqa-full-bf16.toml run \
+  --only gpqa-diamond --strict
+```
+
+This profile expects a separately started BF16 server. The matching
+`autobencher-gpqa-full-android.toml` profile targets the pinned Android LiteRT
+runner. Both use greedy decoding, thinking disabled, a 2,048-token output cap,
+seed 42, and one request at a time. These settings support a paired conversion
+comparison; they do not reproduce the model card's thinking-enabled score.
+See [Android setup and artifact validation](docs/litert-mobile-validation.md).
+
+AutoBencher checks GPQA's requested, successful, scored, and distinct reviewed
+question counts. A successful evaluator exit with fewer than 198 questions is
+`failed` unless a smaller `--limit` was explicitly requested. An intentional
+sample is labelled `sampled`; the report includes its actual question count.
+Missing reports, duplicate question IDs, and evaluator errors fail full coverage.
+
+To continue an interrupted evaluation without regenerating completed answers:
+
+```bash
+cargo run --release -- --config autobencher-gpqa-full-bf16.toml run \
+  --only gpqa-diamond --resume RUN_ID --strict
+```
+
+Resume validates the saved model, endpoint, seed, generation settings, sample
+limit, EvalScope requirement, and saved benchmark definitions before updating
+the harness. Partial EvalScope predictions are reused with `--use-cache`.
+Earlier attempts and configuration snapshots are retained. Increase
+`benchmark_timeout_minutes` for a slow device; changing the evaluation protocol
+requires a new run. The latest attempt duration and the total across attempts
+are reported separately.
+
 To see the complete command plan without downloading dependencies or starting a model:
 
 ```bash
@@ -191,6 +227,8 @@ autobencher --config autobencher-bf16-parity.toml run \
   --only ifeval,gpqa-diamond --limit 1 --no-setup --no-card-check
 ```
 
+
+
 LiteRT-LM 0.17.0 reads the OpenAI field `max_completion_tokens`, while the EvalScope OpenAI client used by this project supplies the legacy `max_tokens` field. `scripts/litert_openai_proxy.py` mirrors that field so completion limits are actually enforced without changing benchmark prompts. The profile also sets `eval_batch_size = 1`, which is important for a single local LiteRT engine; the general AutoBencher default remains 8.
 
 The real-use 16K/32K/64K results are reported relative to the BF16 source in [`results/minicpm5-dynv3-2026-09-11/REPORT.md`](results/minicpm5-dynv3-2026-09-11/REPORT.md). The current evidence includes six BF16-first frozen short-context source-success checks retained by every quant, a matched GPQA-Diamond diagnostic that regresses from BF16 100% to 0% for all three quants, and NoLiMa long-context cases where BF16 succeeds but the quantized artifacts fail retrieval or hit the LiteRT CPU deadline. These are fidelity diagnostics, not full leaderboard reproductions.
@@ -207,7 +245,11 @@ AutoBencher never discards upstream artifacts. It records stdout/stderr and recu
 
 If a process exits successfully but the result format is ambiguous, the row remains `completed` with an unset primary score and a note instructing the operator to inspect the raw report. It is not guessed.
 
-Model-card reference values are stored on a 0–100 scale. Metrics emitted on a 0–1 scale are normalized before reference deltas are computed.
+Model-card reference values are stored on a 0–100 scale. Accuracy metrics emitted
+on a 0–1 scale are normalized; performance metrics retain their original units.
+Reference deltas are disabled by default. Set `compare_model_card_reference = true`
+only after establishing that your full run matches the reference methodology.
+The published reference remains visible for provenance when comparison is disabled.
 
 ## Reproducibility and provenance
 
@@ -220,6 +262,8 @@ Each run captures:
 - the command line used to start AutoBencher
 - a snapshot and SHA-256 of the live MiniCPM5-2B model card
 - per-benchmark commands, timestamps, exit codes and durations
+- effective configuration and selected benchmark definitions, excluding API-key values
+- GPQA question coverage and archived attempts for resumed evaluations
 - all parsed metric candidates and their source file/log
 - benchmark upstream URLs and licensing notes in the registry
 
@@ -234,17 +278,38 @@ cargo build --release
 
 The CI workflow performs formatting, clippy, tests, and a release build on Linux, Windows, and macOS where applicable.
 
+The Android HTTP bridge uses only Python's standard library:
+
+```bash
+python -m unittest discover -s scripts -p test_litert_android_server.py
+```
+
+The artifact preparation and INT4 repair tests additionally require the pinned
+LiteRT conversion environment described in the device-validation guide.
+
 ## Licensing and third-party benchmarks
 
 AutoBencher itself is Apache-2.0. Benchmark datasets and external harnesses retain **their own licenses and terms**. AutoBencher does not relicense or redistribute them. In particular, NoLiMa's official evaluation assets use an Adobe Research license with non-commercial restrictions, and OJBench's repository currently uses AGPL-3.0. Review each upstream benchmark's terms before downloading or executing it.
 
 ## Status philosophy
 
-`completed` means the harness process completed; it does not automatically imply official leaderboard comparability. `blocked` means prerequisites or an exact public recipe were unavailable. `timed_out` and `failed` are infrastructure/execution states and are deliberately not converted into model correctness scores.
+`completed` means the harness process completed and any implemented coverage gate
+passed; it does not automatically imply official leaderboard comparability.
+GPQA Diamond has an explicit full-split gate. Other benchmark splits remain
+`unverified` until their own count/identity gates are implemented. `blocked`
+means prerequisites or an exact public recipe were unavailable. `timed_out` and
+`failed` are execution states and are deliberately not converted into model
+correctness scores.
 
 
 ### Reference-score comparability
 
-The MiniCPM5-2B model card marks some rows with a dagger as results taken from Artificial Analysis, while the remaining rows are reported as OpenBMB internal reproductions. AutoBencher stores those model-card values as provenance/reference targets, not as a guarantee that a public local harness is byte-for-byte identical to the unpublished evaluation environment. A public adapter can therefore be `verified=true` while its delta to the model-card reference remains informational. Rows for which the exact reported slice, judge, simulator, search stack or assets cannot be reproduced are held as `blocked` rather than silently scored with a different task.
+The MiniCPM5-2B model card marks some rows with a dagger as results taken from
+Artificial Analysis, while the remaining rows are reported as OpenBMB internal
+reproductions. A public adapter marked `verified=true` establishes the adapter's
+identity, not identical prompting, decoding, judges, or leaderboard methodology.
+Model-card comparison therefore requires an explicit configuration opt-in;
+sampled and incomplete GPQA runs never receive a reference delta. Rows lacking
+the exact slice, judge, simulator, search stack, or assets remain `blocked`.
 
 That distinction is central to AutoBencher: **benchmark failures and model failures are not the same thing.**

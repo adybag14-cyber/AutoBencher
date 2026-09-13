@@ -26,6 +26,7 @@ pub struct RunContext {
     pub limit: Option<usize>,
     pub run_dir: PathBuf,
     pub dry_run: bool,
+    pub reuse_predictions: bool,
 }
 
 pub async fn run_all(
@@ -85,6 +86,7 @@ async fn run_one(ctx: &RunContext, spec: &BenchmarkSpec) -> Result<BenchmarkResu
             &ctx.api_base,
             &result_dir,
             ctx.limit,
+            ctx.reuse_predictions,
         )),
         RunnerKind::Native => native::plan(
             spec,
@@ -139,11 +141,27 @@ async fn run_one(ctx: &RunContext, spec: &BenchmarkSpec) -> Result<BenchmarkResu
 
     let stdout_log = result_dir.join("stdout.log");
     let stderr_log = result_dir.join("stderr.log");
+    if ctx.reuse_predictions {
+        let archive = result_dir
+            .join("attempts")
+            .join(Utc::now().format("%Y%m%dT%H%M%S").to_string());
+        tokio::fs::create_dir_all(&archive).await?;
+        for name in ["result.json", "stdout.log", "stderr.log", "progress.json"] {
+            let source = result_dir.join(name);
+            if source.is_file() {
+                tokio::fs::copy(&source, archive.join(name)).await?;
+            }
+        }
+    }
+    let timeout_minutes = ctx
+        .cfg
+        .benchmark_timeout_minutes
+        .unwrap_or(spec.timeout_minutes);
     let proc_spec = ProcessSpec {
         invocation: command.invocation.clone(),
         display_command: persisted_command.clone(),
         cwd: result_dir.clone(),
-        timeout: Duration::from_secs(spec.timeout_minutes * 60),
+        timeout: Duration::from_secs(timeout_minutes * 60),
         env: vec![
             ("AUTOBENCHER_MODEL".into(), ctx.model.clone()),
             ("AUTOBENCHER_API_BASE".into(), ctx.api_base.clone()),
@@ -163,8 +181,8 @@ async fn run_one(ctx: &RunContext, spec: &BenchmarkSpec) -> Result<BenchmarkResu
             let (mut m, candidates) =
                 metrics::extract(&outcome.stdout_tail, &outcome.stderr_tail, &result_dir);
             normalize_metric_scale(&mut m, spec.reference_score);
-            let primary = metrics::choose_primary(&m);
-            let status = if outcome.timed_out {
+            let mut primary = metrics::choose_primary(&m);
+            let mut status = if outcome.timed_out {
                 BenchStatus::TimedOut
             } else if outcome.exit_code == Some(0) {
                 BenchStatus::Completed
@@ -172,6 +190,23 @@ async fn run_one(ctx: &RunContext, spec: &BenchmarkSpec) -> Result<BenchmarkResu
                 BenchStatus::Failed
             };
             let mut notes = Vec::new();
+            let coverage = crate::coverage::inspect(spec, &result_dir, ctx.limit);
+            if coverage.scope == "incomplete" {
+                // Partial review rows can contain individual 100% scores even
+                // when no aggregate exists. Retain raw candidates for audit,
+                // but never promote them to a benchmark's primary result.
+                primary = None;
+            }
+            if coverage.scope == "incomplete" && status == BenchStatus::Completed {
+                status = BenchStatus::Failed;
+            }
+            if coverage.scope == "sampled" {
+                notes.push(
+                    "Sampled evaluation: this score does not measure the full benchmark split."
+                        .into(),
+                );
+            }
+            notes.extend(coverage.issues.iter().cloned());
             if status == BenchStatus::Completed && primary.is_none() {
                 notes.push("process completed successfully, but no unambiguous primary score was parsed; inspect raw logs/reports".into());
             }
@@ -191,10 +226,18 @@ async fn run_one(ctx: &RunContext, spec: &BenchmarkSpec) -> Result<BenchmarkResu
                 started_at: started.to_rfc3339(),
                 finished_at: finished,
                 duration_seconds: duration,
+                total_attempt_duration_seconds: None,
                 exit_code: outcome.exit_code,
                 primary_score: primary,
                 reference_score: spec.reference_score,
-                delta_from_reference: primary.map(|p| p - spec.reference_score),
+                delta_from_reference: if !ctx.cfg.compare_model_card_reference
+                    || coverage.scope == "sampled"
+                    || coverage.scope == "incomplete"
+                {
+                    None
+                } else {
+                    primary.map(|p| p - spec.reference_score)
+                },
                 metrics: m,
                 metric_candidates: candidates,
                 command: Some(persisted_command.clone()),
@@ -202,13 +245,16 @@ async fn run_one(ctx: &RunContext, spec: &BenchmarkSpec) -> Result<BenchmarkResu
                 stderr_log: Some(path_string(&stderr_log)),
                 result_dir: path_string(&result_dir),
                 error: if outcome.timed_out {
-                    Some(format!("timeout after {} minutes", spec.timeout_minutes))
+                    Some(format!("timeout after {timeout_minutes} minutes"))
                 } else if outcome.exit_code != Some(0) {
                     Some(format!("process exited with {:?}", outcome.exit_code))
+                } else if coverage.scope == "incomplete" {
+                    Some("benchmark coverage validation failed; inspect coverage.issues".into())
                 } else {
                     None
                 },
                 notes,
+                coverage,
             }
         }
         Err(e) => make_terminal_result(
@@ -254,10 +300,11 @@ fn make_terminal_result(
         started_at,
         finished_at: Utc::now().to_rfc3339(),
         duration_seconds: duration,
+        total_attempt_duration_seconds: None,
         exit_code,
         primary_score: score,
         reference_score: spec.reference_score,
-        delta_from_reference: score.map(|s| s - spec.reference_score),
+        delta_from_reference: None,
         metrics: Default::default(),
         metric_candidates: vec![],
         command,
@@ -266,6 +313,7 @@ fn make_terminal_result(
         result_dir: path_string(result_dir),
         error,
         notes,
+        coverage: Default::default(),
     }
 }
 
@@ -280,8 +328,10 @@ fn normalize_metric_scale(metrics: &mut std::collections::BTreeMap<String, f64>,
     if reference <= 1.0 {
         return;
     }
-    for v in metrics.values_mut() {
-        if (0.0..=1.0).contains(v) {
+    for (key, v) in metrics.iter_mut() {
+        // Latency, token counts, and throughput also expose a `mean`. They are
+        // not accuracy ratios and must keep their original units.
+        if !key.starts_with("perf_metrics.") && (0.0..=1.0).contains(v) {
             *v *= 100.0;
         }
     }
