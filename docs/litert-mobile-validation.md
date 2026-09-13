@@ -158,6 +158,43 @@ provenance before claiming a reproduced result.
 
 ## NPU acceptance
 
+Two artifact defects were isolated on the REDMAGIC 10 Pro (SM8750):
+
+- Repeating a causal mask with a repeated-input CONCAT produced incorrect
+  later query-head groups after Qualcomm compilation. Before compilation,
+  `repair_litert_npu_mask.py` replaces that expansion with explicit query-head
+  reshapes and broadcast ADD. It preserves every original weight buffer and
+  rejects different quantization or incompatible shapes. The regression test
+  compares actual LiteRT Interpreter outputs across every head.
+- Unused last-layer prefill KV inputs caused LiteRT-LM 0.17 to allocate host
+  memory and reuse it for NPU decode. After compilation,
+  `repair_litert_npu_cache_inputs.py` removes only unused prefill signature and
+  graph inputs that also exist in decode. Decode then supplies the allocation
+  requirements. QNN bytecode and all bytes outside the metadata region remain
+  identical. Shared graphs and missing decode inputs are rejected.
+
+Both scripts operate on standalone TFLite sections. Rebuild the `.litertlm`
+container using its extracted TOML and the pinned `litert_lm_builder`; do not
+blindly repack a compiled FlatBuffer because DISPATCH_OP has external bytecode
+offsets in addition to ordinary buffer offsets.
+
+```bash
+python scripts/repair_litert_npu_mask.py --input quantized.tflite \
+  --output mask-fixed.tflite --report mask-repair.json
+# Compile and extract the SM8750 bundle with the pinned Qualcomm toolchain.
+python scripts/repair_litert_npu_cache_inputs.py --source compiled.tflite \
+  --output cache-compatible.tflite
+```
+
+The repaired A16W8, 1,024-context, one-token-prefill MiniCPM5 candidate passed
+five short physical-device checks using Gallery 1.0.19's actual native runtime
+and Qualcomm HTP libraries. Chinese and English subtraction plus a 307-token
+recall check matched fresh BF16 answers. A 64-token-prefill variant still failed
+the Chinese control and was excluded from the working artifact selection.
+These bounded checks do not establish broad quality parity or sustained speed.
+The longer phone GPQA run was canceled at the user's request; no complete phone
+score or paired accuracy delta is claimed.
+
 NPU compilation is specific to the SoC and vendor/runtime ABI. Record the SoC,
 compiler, Qualcomm SDK, dispatch library, native runner, and all artifact/library
 hashes. Require both actual HTP dispatch and correct output on the physical
