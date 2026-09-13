@@ -181,7 +181,7 @@ async fn run_one(ctx: &RunContext, spec: &BenchmarkSpec) -> Result<BenchmarkResu
             let (mut m, candidates) =
                 metrics::extract(&outcome.stdout_tail, &outcome.stderr_tail, &result_dir);
             normalize_metric_scale(&mut m, spec.reference_score);
-            let primary = metrics::choose_primary(&m);
+            let mut primary = metrics::choose_primary(&m);
             let mut status = if outcome.timed_out {
                 BenchStatus::TimedOut
             } else if outcome.exit_code == Some(0) {
@@ -191,6 +191,12 @@ async fn run_one(ctx: &RunContext, spec: &BenchmarkSpec) -> Result<BenchmarkResu
             };
             let mut notes = Vec::new();
             let coverage = crate::coverage::inspect(spec, &result_dir, ctx.limit);
+            if coverage.scope == "incomplete" {
+                // Partial review rows can contain individual 100% scores even
+                // when no aggregate exists. Retain raw candidates for audit,
+                // but never promote them to a benchmark's primary result.
+                primary = None;
+            }
             if coverage.scope == "incomplete" && status == BenchStatus::Completed {
                 status = BenchStatus::Failed;
             }
