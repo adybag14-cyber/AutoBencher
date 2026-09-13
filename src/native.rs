@@ -58,6 +58,7 @@ pub fn evalscope_compat(
     api_base: &str,
     result_dir: &Path,
     limit: Option<usize>,
+    reuse_predictions: bool,
 ) -> PlannedCommand {
     let exe = crate::bootstrap::evalscope_path_for(cfg, spec);
     let base = api_base.trim_end_matches('/');
@@ -93,6 +94,10 @@ pub fn evalscope_compat(
         cfg.generation_config.clone(),
     ];
     args.extend(spec.evalscope_args.clone());
+    if reuse_predictions && result_dir.join("predictions").is_dir() {
+        args.push("--use-cache".into());
+        args.push(result_dir.display().to_string());
+    }
     if let Some(n) = limit {
         args.push("--limit".into());
         args.push(n.to_string());

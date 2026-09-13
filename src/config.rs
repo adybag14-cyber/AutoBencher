@@ -19,6 +19,11 @@ pub struct AppConfig {
     pub generation_config: String,
     #[serde(default = "default_eval_batch_size")]
     pub eval_batch_size: usize,
+    #[serde(default)]
+    pub benchmark_timeout_minutes: Option<u64>,
+    /// Opt in only after matching the model card's evaluation protocol.
+    #[serde(default)]
+    pub compare_model_card_reference: bool,
     pub vllm: VllmConfig,
 }
 

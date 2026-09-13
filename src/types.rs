@@ -86,6 +86,8 @@ pub struct BenchmarkResult {
     pub started_at: String,
     pub finished_at: String,
     pub duration_seconds: f64,
+    #[serde(default)]
+    pub total_attempt_duration_seconds: Option<f64>,
     pub exit_code: Option<i32>,
     pub primary_score: Option<f64>,
     pub reference_score: f64,
@@ -98,6 +100,22 @@ pub struct BenchmarkResult {
     pub result_dir: String,
     pub error: Option<String>,
     pub notes: Vec<String>,
+    #[serde(default)]
+    pub coverage: EvaluationCoverage,
+}
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct EvaluationCoverage {
+    pub expected_samples: Option<usize>,
+    pub requested_limit: Option<usize>,
+    pub requested_samples: Option<usize>,
+    pub succeeded_samples: Option<usize>,
+    pub scored_samples: Option<usize>,
+    pub unique_samples: Option<usize>,
+    pub errored_samples: Option<usize>,
+    pub scope: String,
+    pub evidence: Vec<String>,
+    pub issues: Vec<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

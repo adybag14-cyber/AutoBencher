@@ -6,3 +6,4 @@
 *.sqlite3-wal
 autobencher.local.toml
 .env
+__pycache__/
