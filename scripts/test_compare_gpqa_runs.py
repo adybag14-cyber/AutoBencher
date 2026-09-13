@@ -15,6 +15,11 @@ class ComparisonTests(unittest.TestCase):
         self.assertEqual(result['improvements'],0)
         self.assertEqual(result['candidate']['correct'],197)
         self.assertAlmostEqual(result['accuracy_delta_percentage_points'],-100/198)
+        candidate[6]['input_tokens']=11
+        mismatched=summarize_pairs(ref,candidate)
+        self.assertFalse(mismatched['rendered_input_token_counts_match'])
+        self.assertEqual(mismatched['input_token_count_mismatches'],[{'id':6,'baseline':10,'candidate':11}])
+        candidate[6]['input_tokens']=10
         candidate[6]['question_sha256']='different-question'
         with self.assertRaises(ValueError):summarize_pairs(ref,candidate)
         with self.assertRaises(ValueError):summarize_pairs({0:ref[0]},{0:ref[0]})

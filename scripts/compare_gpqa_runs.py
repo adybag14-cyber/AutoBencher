@@ -96,6 +96,9 @@ def summarize_pairs(baseline, candidate):
             'both_parsed_questions':both_parsed,
             'both_unparsed_questions':sum(r['bf16_answer'] not in valid_answers and r['candidate_answer'] not in valid_answers for r in paired),
             'answer_agreement_when_both_parsed':matching_answers/both_parsed if both_parsed else None,
+            'rendered_input_token_counts_match':all(baseline[i]['input_tokens']==candidate[i]['input_tokens'] for i in baseline),
+            'input_token_count_mismatches':[{'id':i,'baseline':baseline[i]['input_tokens'],'candidate':candidate[i]['input_tokens']}
+                                            for i in sorted(baseline) if baseline[i]['input_tokens']!=candidate[i]['input_tokens']],
             'mcnemar_exact_two_sided_p':pvalue,
             'paired_question_bootstrap_95pct_delta_interval':[samples[249],samples[9749]],
             'bootstrap_seed':20260912,'bootstrap_resamples':10000,
