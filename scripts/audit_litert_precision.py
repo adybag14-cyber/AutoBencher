@@ -7,7 +7,6 @@ from collections import Counter
 from pathlib import Path
 import numpy as np
 from ai_edge_litert import schema_py_generated as schema
-from litert_lm_builder import peek_litertlm_file
 
 
 def digest(path):
@@ -22,7 +21,7 @@ def inspect_section(data,base,end,section_id,selection):
     model=schema.Model.GetRootAsModel(view,0)
     names={v:k for k,v in vars(schema.TensorType).items() if isinstance(v,int)}
     opnames={v:k for k,v in vars(schema.BuiltinOperator).items() if isinstance(v,int)}
-    counts=Counter(); unique={}; groups={}; errors=[]; seen_scales=set(); invalid_scales=0
+    counts=Counter(); unique={}; groups={}; vocab={}; errors=[]; seen_scales=set(); invalid_scales=0
     for index in range(model.SubgraphsLength()):
         sg=model.Subgraphs(index)
         for i in range(sg.OperatorsLength()):
@@ -36,6 +35,12 @@ def inspect_section(data,base,end,section_id,selection):
                 'stored_bytes':int(buffer.DataLength() or buffer.Size()),'operation':opnames.get(code,str(code))})
             counts[dtype]+=1
             text=output+' '+name
+            role='embedding' if code==schema.BuiltinOperator.EMBEDDING_LOOKUP else (
+                'lm_head' if 'Linear_lm_head' in text or 'decode_logits_output' in text else None)
+            if role:
+                vocab.setdefault(role,set()).add(dtype)
+                if selection and selection.get(role+'_int8') and dtype!='INT8':
+                    errors.append(f'{role}: expected INT8, stored {dtype}')
             layer=re.search(r'LlamaDecoderLayer_(\d+)/',text)
             group='attention' if 'LlamaAttention_self_attn' in text else ('mlp' if 'LlamaMLP_mlp' in text else None)
             if layer and group:
@@ -63,10 +68,12 @@ def inspect_section(data,base,end,section_id,selection):
                 invalid_scales+=int(np.count_nonzero(~np.isfinite(values)|(values<=0)))
     return {'section':section_id,'fc_embedding_operator_weight_types':dict(counts),
         'unique_weight_buffers':list(unique.values()),'layer_weight_types':{k:sorted(v) for k,v in groups.items()},
+        'vocab_weight_types':{k:sorted(v) for k,v in vocab.items()},
         'invalid_scale_entries':invalid_scales,'precision_mismatches':sorted(set(errors))}
 
 
 def main():
+    from litert_lm_builder import peek_litertlm_file
     ap=argparse.ArgumentParser();ap.add_argument('--artifact',type=Path,required=True)
     ap.add_argument('--selection',type=Path);ap.add_argument('--output',type=Path,required=True)
     args=ap.parse_args();selection=json.loads(args.selection.read_text())['selection'] if args.selection else None
@@ -86,9 +93,17 @@ def main():
     errors=[e for r in results for e in r['precision_mismatches']]
     invalid=sum(r['invalid_scale_entries'] for r in results)
     if selection and (len(groups)!=84): errors.append(f'Expected 84 identifiable attention/MLP groups, found {len(groups)}')
+    vocab={}
+    for result in results:
+        for role,types in result['vocab_weight_types'].items():vocab.setdefault(role,set()).update(types)
+    if selection:
+        for role in ['embedding','lm_head']:
+            if selection.get(role+'_int8') and vocab.get(role)!= {'INT8'}:
+                errors.append(f'{role}: expected an identifiable INT8 vocabulary weight, found {sorted(vocab.get(role,set()))}')
     report={'artifact':str(args.artifact),'sha256':digest(args.artifact),'bytes':args.artifact.stat().st_size,
         'audit_kind':'stored_fc_embedding_weight_types_and_scales','sections':results,
         'identifiable_layer_groups':len(groups),'invalid_scale_entries':invalid,
+        'vocab_weight_types':{k:sorted(v) for k,v in vocab.items()},
         'errors':errors,'passed':not errors and invalid==0,
         'scope':'Stored tensor types and scale validity only. No runtime, accuracy or context-retention claim.'}
     args.output.parent.mkdir(parents=True,exist_ok=True)

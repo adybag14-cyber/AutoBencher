@@ -1,4 +1,4 @@
-model = "minicpm5-2b-android-gpu"
+model = "minicpm5-2b-mobile-int8-android-gpu"
 engine = "external"
 api_base = "http://127.0.0.1:9396"
 api_key_env = "AUTOBENCHER_API_KEY"

@@ -38,11 +38,17 @@ def main():
     def rule(regex,operation='FULLY_CONNECTED'):
         value=copy.deepcopy(int8);value.update(regex=regex,operation=operation);return value
     def selected_recipe():
-        rules=[copy.deepcopy(int4),rule('.*','EMBEDDING_LOOKUP')]
+        # Keep unnamed/renamed vocabulary projections at INT8 by default.
+        # FP16 conversion can rename decode_logits_output, so an exact output
+        # name rule is not a reliable way to protect the LM head.
+        rules=[copy.deepcopy(int8)]
         for key,kind in [('attention_int8_layers','LlamaAttention_self_attn'),('mlp_int8_layers','LlamaMLP_mlp')]:
-            layers='|'.join(map(str,selection[key]))
-            if layers:rules.append(rule(rf'.*LlamaDecoderLayer_(?:{layers})/.*{kind}.*'))
-        rules.append(rule(r'^decode_logits_output;$'))
+            layers='|'.join(str(i) for i in range(42) if i not in selection[key])
+            if layers:
+                value=copy.deepcopy(int4)
+                value.update(regex=rf'.*LlamaDecoderLayer_(?:{layers})/.*{kind}.*',operation='FULLY_CONNECTED')
+                rules.append(value)
+        rules.append(rule('.*','EMBEDDING_LOOKUP'))
         return rules
     recipe.MINICPM_MOBILE_CALIBRATED=selected_recipe
     report={'source_model':str(a.model),'context':a.context,'prefill':[a.prefill],

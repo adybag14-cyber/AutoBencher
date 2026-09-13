@@ -38,7 +38,7 @@ Compute the model's SHA-256 on the host, then provide it to the bridge:
 python scripts/litert_android_server.py \
   --adb /path/to/adb --serial SERIAL \
   --model-path /data/local/tmp/litert-validation/model.litertlm \
-  --sha256 MODEL_SHA256 --model-id minicpm5-2b-android-gpu \
+  --sha256 MODEL_SHA256 --model-id minicpm5-2b-mobile-int8-android-gpu \
   --runner /data/local/tmp/litert-validation/device_runner_jni \
   --cache-dir /data/local/tmp/litert-validation/cache-gpu \
   --backend gpu --port 9396 --evidence device-evidence
@@ -129,9 +129,13 @@ space for one export and run exports serially on a constrained filesystem.
 The output provenance records package versions, context, selected precision,
 artifact hash, and an explicit pending device-validation status.
 
-The strict calibration policy used for the current quality candidate selected
-INT8 for every attention and MLP group. It must therefore be described as an
-INT8 candidate. A selection method inspired by data-dependent quantization does
+The strict calibration policy selected INT8 for every attention and MLP group.
+Vocabulary weights need their own audit: an earlier export used an exact output
+name rule that missed the LM head after FP16 conversion, leaving that head at
+INT4 even though the transformer groups passed their checks. The exporter now
+defaults to INT8 and applies INT4 only to explicitly selected layer groups;
+the audit separately requires an INT8 embedding and output head. A selection
+method inspired by data-dependent quantization does
 not establish that a particular export is lossless or an official Unsloth build.
 Inspect the stored tensors after export; a requested rule alone is not proof
 that it matched the intended weights.
