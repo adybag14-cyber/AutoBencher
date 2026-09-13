@@ -2,6 +2,7 @@ import unittest
 import flatbuffers
 from ai_edge_litert import schema_py_generated as s
 from audit_litert_precision import inspect_section
+from prepare_litert_mobile import parse_tflite_sections
 
 def fixture(bits):
     model=s.ModelT();model.version=3;model.buffers=[s.BufferT()]
@@ -20,6 +21,13 @@ def fixture(bits):
     return bytes(builder.Output())
 
 class VocabularyAuditTests(unittest.TestCase):
+    def test_metadata_section_does_not_steal_the_next_model_section_id(self):
+        peek=''.join(f'Section {index}:\n  Items:\n    Key: example\n  Begin Offset: {start}\n  End Offset:   {end}\n  Data Type:    {kind}\n\n'
+                     for index,start,end,kind in [(0,128,256,'LlmMetadataProto'),
+                                                 (3,1024,2048,'TFLiteModel'),
+                                                 (4,4096,8192,'TFLiteModel')])
+        self.assertEqual(parse_tflite_sections(peek),[(3,1024,2048),(4,4096,8192)])
+
     def test_int4_head_cannot_pass_an_int8_head_declaration(self):
         data=fixture(s.TensorType.INT4)
         result=inspect_section(data,0,len(data),0,{'lm_head_int8':True})

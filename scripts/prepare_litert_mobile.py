@@ -18,15 +18,20 @@ import struct
 import tempfile
 
 from ai_edge_litert import schema_py_generated as schema
-from litert_lm_builder import peek_litertlm_file
+
+
+def parse_tflite_sections(peek):
+    pattern = r'Section (\d+):\n  Items:\n(.*?)\n  Begin Offset: (\d+)\n  End Offset:\s+(\d+)\n  Data Type:\s+(\S+)'
+    return [(int(m.group(1)), int(m.group(3)), int(m.group(4)))
+            for m in re.finditer(pattern, peek, re.S) if m.group(5) == 'TFLiteModel']
 
 
 def tflite_sections(path):
+    from litert_lm_builder import peek_litertlm_file
     with tempfile.TemporaryDirectory(prefix='litert_mobile_metadata_') as tmp:
         output = io.StringIO()
         peek_litertlm_file(str(path), tmp, output)
-        pattern = r'Section (\d+):\n  Items:\n.*?\n  Begin Offset: (\d+)\n  End Offset:\s+(\d+)\n  Data Type:\s+TFLiteModel'
-        sections = [tuple(int(x) for x in m.groups()) for m in re.finditer(pattern, output.getvalue(), re.S)]
+        sections = parse_tflite_sections(output.getvalue())
     if not sections:
         raise ValueError('No TFLite model sections found')
     return sections

@@ -83,12 +83,19 @@ def summarize_pairs(baseline, candidate):
                 'truncated_outputs':sum(r['truncated'] for r in values),
                 'input_tokens':sum(r['input_tokens'] for r in values),
                 'output_tokens':sum(r['output_tokens'] for r in values)}
+    valid_answers=('A','B','C','D')
+    both_parsed=sum(r['bf16_answer'] in valid_answers and r['candidate_answer'] in valid_answers for r in paired)
+    matching_answers=sum(r['bf16_answer'] in valid_answers and r['bf16_answer']==r['candidate_answer'] for r in paired)
     return {'baseline':stats(baseline),'candidate':stats(candidate),
             'accuracy_delta_percentage_points':100*(improvements-regressions)/198,
             'improvements':improvements,'regressions':regressions,
             'both_correct':sum(r['bf16_correct'] and r['candidate_correct'] for r in paired),
             'both_incorrect':sum(not r['bf16_correct'] and not r['candidate_correct'] for r in paired),
-            'answer_agreement':sum(r['bf16_answer']==r['candidate_answer'] for r in paired)/198,
+            'answer_agreement':matching_answers/198,
+            'answer_agreement_scope':'Matching valid A-D answers divided by all 198 questions; missing answers never count as agreement.',
+            'both_parsed_questions':both_parsed,
+            'both_unparsed_questions':sum(r['bf16_answer'] not in valid_answers and r['candidate_answer'] not in valid_answers for r in paired),
+            'answer_agreement_when_both_parsed':matching_answers/both_parsed if both_parsed else None,
             'mcnemar_exact_two_sided_p':pvalue,
             'paired_question_bootstrap_95pct_delta_interval':[samples[249],samples[9749]],
             'bootstrap_seed':20260912,'bootstrap_resamples':10000,

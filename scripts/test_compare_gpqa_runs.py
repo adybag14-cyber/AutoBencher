@@ -28,6 +28,21 @@ class ComparisonTests(unittest.TestCase):
         right[0]['content']='Another question'
         self.assertNotEqual(prompt_hash(left),prompt_hash(right))
 
+    def test_missing_answers_do_not_inflate_agreement(self):
+        ref=self.rows();candidate=copy.deepcopy(ref)
+        ref[0].update(answer=None,correct=0)
+        candidate[0].update(answer=None,correct=0)
+        candidate[1].update(answer=None,correct=0)
+        result=summarize_pairs(ref,candidate)
+        self.assertAlmostEqual(result['answer_agreement'],196/198)
+        self.assertEqual(result['both_parsed_questions'],196)
+        self.assertEqual(result['both_unparsed_questions'],1)
+        self.assertEqual(result['answer_agreement_when_both_parsed'],1)
+        for row in ref.values():row.update(answer=None,correct=0)
+        result=summarize_pairs(ref,ref)
+        self.assertEqual(result['answer_agreement'],0)
+        self.assertIsNone(result['answer_agreement_when_both_parsed'])
+
     def test_jsonl_unicode_line_separator_is_part_of_the_string(self):
         with tempfile.TemporaryDirectory() as tmp:
             root=pathlib.Path(tmp)
